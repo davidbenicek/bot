@@ -35,6 +35,11 @@ const connector = new builder.ChatConnector({
 // Listen for messages from users
 server.post('/api/messages', connector.listen());
 
+server.get('/', (req, res, cb)  => {
+  res.send('Something, something Turing test...');
+  return cb();
+});
+
 /*----------------------------------------------------------------------------------------
 * Bot Storage: This is a great spot to register the private state storage for your bot. 
 * We provide adapters for Azure Table, CosmosDb, SQL Azure, or you can implement your own!
