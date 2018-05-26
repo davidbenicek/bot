@@ -14,6 +14,7 @@ if (process.env.BotEnv !== 'prod') {
   const keysReady = secretsManager.loadSecrets();
   keysReady.then((keys) => {
     process.env = keys;
+    console.log(keys);
     console.log('Keys retrieved...');
   }).catch((err) => {
     console.log('Failed to fetch keys...', err);
