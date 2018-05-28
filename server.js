@@ -3,9 +3,9 @@ const builder = require('botbuilder');
 require('dotenv').load();
 
 const secretsManager = require('./util/secretsManager');
-
+const skyscanner = require('./services/skyscanner');
 // const botbuilderAzure = require("botbuilder-azure");
-
+skyscanner.findFlight('Lond');
 const server = restify.createServer();
 server.listen(process.env.PORT || 3978, () => {
   console.log(`Listening on port ${process.env.PORT || 3978}`);
