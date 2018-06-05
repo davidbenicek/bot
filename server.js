@@ -3,9 +3,9 @@ const builder = require('botbuilder');
 require('dotenv').load();
 
 const secretsManager = require('./util/secretsManager');
+const formatter = require('./util/formatter');
 const skyscanner = require('./services/skyscanner');
 // const botbuilderAzure = require("botbuilder-azure");
-skyscanner.findFlight('Lond');
 const server = restify.createServer();
 server.listen(process.env.PORT || 3978, () => {
   console.log(`Listening on port ${process.env.PORT || 3978}`);
@@ -52,15 +52,22 @@ const setUp = () => {
     .matches('Greeting', (session) => {
       session.send('Hey there! How can I help?');
     })
-    .matches('Flight.Book', [(session, reply, next) => {
+    .matches('Book.Flight', [(session, reply, next) => {
+      console.log(reply);
       // Try get all the data from the initial user query
       const origin = builder.EntityRecognizer.findEntity(reply.entities, 'place::origin');
       const destination = builder.EntityRecognizer.findEntity(reply.entities, 'place::destination');
+      let [date1, date2] = builder.EntityRecognizer.findAllEntities(reply.entities, 'builtin.datetimeV2.date');
+
+      if (date1) [date1] = formatter.ensureDateIsNotPast(date1.resolution.values);
+      if (date2) [date2] = formatter.ensureDateIsNotPast(date2.resolution.values, date1.value);
 
       // Save to dialog data
       const trip = {
         origin: origin ? origin.entity : undefined,
         destination: destination ? destination.entity : undefined,
+        date1,
+        date2,
       };
       session.dialogData.trip = trip;
 
@@ -71,7 +78,7 @@ const setUp = () => {
       } else {
         next();
       }
-    }, (session, reply, next) => {
+    }, async (session, reply, next) => {
       if (reply.response) {
         session.dialogData.trip.origin = reply.response;
       }
@@ -80,18 +87,67 @@ const setUp = () => {
 
       // If there's no from param, ask!
       if (!trip.destination) {
-        builder.Prompts.text(session, 'Where are you flying to?');
+        try {
+          builder.Prompts.text(session, 'Where would you like to fly to? (anywhere is an option, by the way)');
+        } catch (err) {
+          console.log(err);
+        }
       } else {
         next();
       }
-    }, (session, reply) => {
+    }, async (session, reply) => {
+      console.log("REPLY");
+      console.log(reply);
       if (reply.response) {
         session.dialogData.trip.destination = reply.response;
       }
-
       const { trip } = session.dialogData;
 
-      session.send(`Booking flight from ${trip.origin} to ${trip.destination}`);
+      if (trip.destination.toLowerCase() === 'anywhere' || trip.destination === '') {
+        try {
+          const fromSkyscannerCode = await skyscanner.getLocationCode(trip.origin);
+          console.log(fromSkyscannerCode);
+          const flights = await skyscanner.browseRoutes(fromSkyscannerCode.PlaceId);
+          console.log("FLIGHTS!:", flights);
+          // flights.reverse().forEach((flight) => {
+          //   flightsOverview += `From ${flight.origin.name} to ${flight.destination.name} for ${flight.currency.Symbol}${flight.price}!\n\n\n\n`;
+          // });
+          const flightsOverview = [];
+          flights.reverse().forEach((flight) => {
+            flightsOverview.push(new builder.HeroCard(session)
+              .title(flight.destination.name)
+              .subtitle(`How do you fancy a trip to  ${flight.destination.name}?`)
+              .text(`Fly from ${flight.origin.name} to ${flight.destination.name} for ${flight.currency.Symbol}${flight.price}!`)
+              .images([
+                builder.CardImage.create(session, 'https://secure.i.telegraph.co.uk/multimedia/archive/01692/flight-gill_1692367c.jpg'),
+              ])
+              .buttons([
+                builder.CardAction.openUrl(session, 'https://www.skyscanner.net', 'Book!'),
+              ]));
+          });
+
+          const message = new builder.Message(session)
+            .attachmentLayout(builder.AttachmentLayout.carousel)
+            .attachments(flightsOverview);
+
+          session.send(message);
+        } catch (err) {
+          console.log(err);
+          session.send('I am so sorry, I goofed up. Try again plase!');
+        }
+      } else {
+        try {
+          const fromSkyscannerCode = await skyscanner.getLocationCode(trip.origin);
+          const toSkyscannerCode = await skyscanner.getLocationCode(trip.destination);
+          console.log(fromSkyscannerCode, toSkyscannerCode);
+          const flights = await skyscanner.browseQuotes(fromSkyscannerCode.PlaceId, toSkyscannerCode.PlaceId, trip.date1.value, trip.date2.value);
+          console.log("FLIGHTS!:", flights);
+          session.send(`I found ${flights.Quotes.length} flights! Will be sending you details soon - one of them costs ${flights.Quotes[0].MinPrice}`);
+        } catch (err) {
+          console.log(err.message);
+          session.send('I have failed. I am not strong enough. Please try again!');
+        }
+      }
     }])
     .onDefault((session) => {
       session.send('Sorry pal, I did not understand \'%s\'.', session.message.text);

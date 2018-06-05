@@ -17,7 +17,17 @@ const callAPI = async (endpoint, params) => {
   return request(options);
 };
 
-const formatInfo = async (routes, places, currency) => {
+const getLocationCode = async (query, country, currency, locale) => {
+  if (!country) country = 'UK';
+  if (!currency) currency = 'GBP';
+  if (!locale) locale = 'en-UK';
+
+  const locations = await callAPI('autosuggest/v1.0/UK/GBP/en-GB/', { query });
+  return locations.Places[0];
+};
+
+const formatInfo = async (routes, places, currency, length) => {
+  if (!routes || !places || !currency) throw new Error('You must specify routes, places and a currency for formatInfo');
   const placesLookUp = {};
   places.forEach((place) => {
     placesLookUp[place.PlaceId] = {
@@ -26,24 +36,25 @@ const formatInfo = async (routes, places, currency) => {
       code: place.SkyscannerCode,
     };
   });
+
+  if (!length) length = 10;
   routes = routes.sort((a, b) => (
-    a.Price > b.Price
-  )).slice(0, 10);
-  let offers = routes.map(route => (
-    {
-      origin: placesLookUp[route.OriginId],
-      destination: placesLookUp[route.DestinationId],
-      currency,
-      price: route.Price,
-    }
-  ));
+    a.Price < b.Price
+  )).slice(routes.length - length);
+
+  let offers = routes.map(route => ({
+    origin: placesLookUp[route.OriginId],
+    destination: placesLookUp[route.DestinationId],
+    currency,
+    price: route.Price,
+  }));
   offers = offers.sort((a, b) => (
-    a.price > b.price
-  )).slice(0, 10);
-  return offers;
+    parseInt(a.price, 10) < parseInt(b.price, 10)
+  ));
+  return offers.slice(0, 10);
 };
 
-const findFlight = async (
+const browseRoutes = async (
   originAirport,
   destinationAirport,
   outboundDate,
@@ -60,7 +71,7 @@ const findFlight = async (
   if (!locale) locale = 'en-UK';
   console.log(`browseroutes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
 
-  let res = await callAPI(`browseroutes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
+  const res = await callAPI(`browseroutes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
   console.log(Object.keys(res));
   console.log("Got it", res.Routes[0]);
   const options = await formatInfo(res.Routes, res.Places, res.Currencies[0]);
@@ -68,6 +79,33 @@ const findFlight = async (
   return options;
 };
 
+const browseQuotes = async (
+  originAirport,
+  destinationAirport,
+  outboundDate,
+  returnDate,
+  country,
+  currency,
+  locale) => {
+  if (!originAirport) throw new Error('Origin aiport undefined. Required in findFlight');
+  if (!destinationAirport) destinationAirport = 'anywhere';
+  if (!outboundDate) outboundDate = 'anytime';
+  if (!returnDate) returnDate = 'anytime';
+  if (!country) country = 'UK';
+  if (!currency) currency = 'GBP';
+  if (!locale) locale = 'en-UK';
+  console.log(`browsequotes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
+
+  const res = await callAPI(`browsequotes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
+  console.log('Got it!', Object.keys(res));
+  // console.log("Got it", res.Quotes[0]);
+  // const options = await formatInfo(res.Routes, res.Places, res.Currencies[0]);
+  // console.log(options);
+  return res;
+};
+
 module.exports = {
-  findFlight,
+  browseRoutes,
+  browseQuotes,
+  getLocationCode,
 };
