@@ -65,7 +65,7 @@ const browseRoutes = async (
   if (!originAirport) throw new Error('Origin aiport undefined. Required in findFlight');
   if (!destinationAirport) destinationAirport = 'anywhere';
   if (!outboundDate) outboundDate = 'anytime';
-  if (!returnDate) returnDate = 'anytime';
+  if (!returnDate && returnDate !== '') returnDate = 'anytime';
   if (!country) country = 'UK';
   if (!currency) currency = 'GBP';
   if (!locale) locale = 'en-UK';
@@ -90,7 +90,7 @@ const browseQuotes = async (
   if (!originAirport) throw new Error('Origin aiport undefined. Required in findFlight');
   if (!destinationAirport) destinationAirport = 'anywhere';
   if (!outboundDate) outboundDate = 'anytime';
-  if (!returnDate) returnDate = 'anytime';
+  if (!returnDate && returnDate !== '') returnDate = 'anytime';
   if (!country) country = 'UK';
   if (!currency) currency = 'GBP';
   if (!locale) locale = 'en-UK';
