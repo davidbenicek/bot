@@ -27,13 +27,14 @@ const setUp = () => {
   server.post('/api/messages', connector.listen());
 
   /*----------------------------------------------------------------------------------------
-  * Bot Storage: This is a great spot to register the private state storage for your bot. 
+  * Bot Storage: This is a great spot to register the private state storage for your bot.
   * We provide adapters for Azure Table, CosmosDb, SQL Azure, or you can implement your own!
   * For samples and documentation, see: https://github.com/Microsoft/BotBuilder-Azure
   * ---------------------------------------------------------------------------------------- */
 
   // var tableName = 'botdata';
-  // var azureTableClient = new botbuilderAzure.AzureTableClient(tableName, process.env['AzureWebJobsStorage']);
+  // var azureTableClient =
+  // new botbuilderAzure.AzureTableClient(tableName, process.env['AzureWebJobsStorage']);
   // var tableStorage = new botbuilderAzure.AzureBotStorage({ gzipData: false }, azureTableClient);
 
   // Create your bot with a function to receive messages from the user
@@ -45,7 +46,7 @@ const setUp = () => {
   const { LUIS_APP_KEY } = process.env;
   const LUIS_API_HOSTNAME = process.env.LUIS_API_HOSTNAME || 'westus.api.cognitive.microsoft.com';
 
-  const LUIS_URL = `https://${LUIS_API_HOSTNAME}/luis/v2.0/apps/${LUIS_APP_ID}?subscription-key=${LUIS_APP_KEY}&verbose=true&timezoneOffset=0&q=`
+  const LUIS_URL = `https://${LUIS_API_HOSTNAME}/luis/v2.0/apps/${LUIS_APP_ID}?subscription-key=${LUIS_APP_KEY}&verbose=true&timezoneOffset=0&q=`;
 
   const recognizer = new builder.LuisRecognizer(LUIS_URL);
   const intents = new builder.IntentDialog({ recognizers: [recognizer] })
@@ -96,7 +97,7 @@ const setUp = () => {
         next();
       }
     }, async (session, reply, next) => {
-      console.log("REPLY");
+      console.log('REPLY');
       console.log(reply);
       if (reply.response) {
         session.dialogData.trip.destination = reply.response;
@@ -119,7 +120,10 @@ const setUp = () => {
         if (reply.response.toLowerCase() === 'anytime') {
           session.dialogData.trip.date1 = 'anytime';
         } else {
-          const tempDate = builder.EntityRecognizer.recognizeTime(reply.response, new Date()).resolution.start;
+          const tempDate = builder.EntityRecognizer.recognizeTime(
+            reply.response,
+            new Date(),
+          ).resolution.start;
           session.dialogData.trip.date1 = tempDate.toISOString().slice(0, 10);
         }
       }
@@ -149,7 +153,10 @@ const setUp = () => {
         } else if (response.toLowerCase() === 'anytime') {
           session.dialogData.trip.date2 = 'anytime';
         } else {
-          const tempDate = builder.EntityRecognizer.recognizeTime(response, new Date()).resolution.start;
+          const tempDate = builder.EntityRecognizer.recognizeTime(
+            response,
+            new Date(),
+          ).resolution.start;
           session.dialogData.trip.date2 = tempDate.toISOString().slice(0, 10);
         }
       }
@@ -164,10 +171,7 @@ const setUp = () => {
           const fromSkyscannerCode = await skyscanner.getLocationCode(trip.origin);
           console.log(fromSkyscannerCode);
           const flights = await skyscanner.browseRoutes(fromSkyscannerCode.PlaceId);
-          console.log("FLIGHTS!:", flights);
-          // flights.reverse().forEach((flight) => {
-          //   flightsOverview += `From ${flight.origin.name} to ${flight.destination.name} for ${flight.currency.Symbol}${flight.price}!\n\n\n\n`;
-          // });
+          console.log('FLIGHTS!:', flights);
           const flightsOverview = [];
           flights.reverse().forEach((flight) => {
             flightsOverview.push(new builder.HeroCard(session)
@@ -209,8 +213,12 @@ const setUp = () => {
           console.log(fromSkyscannerCode, toSkyscannerCode);
           const date1 = (typeof trip.date1 !== 'string' && 'value' in trip.date1) ? trip.date1.value : trip.date1;
           const date2 = (typeof trip.date2 !== 'string' && 'value' in trip.date2) ? trip.date2.value : trip.date2;
-          const flights = await skyscanner.browseQuotes(fromSkyscannerCode.PlaceId, toSkyscannerCode.PlaceId, date1, date2);
-          console.log("FLIGHTS!:", flights);
+          const flights = await skyscanner.browseQuotes(
+            fromSkyscannerCode.PlaceId,
+            toSkyscannerCode.PlaceId,
+            date1, date2,
+          );
+          console.log('FLIGHTS!:', flights);
           session.send(`I found ${flights.Quotes.length} flights! Will be sending you details soon - one of them costs ${flights.Quotes[0].MinPrice}`);
         } catch (err) {
           console.log(err.message);

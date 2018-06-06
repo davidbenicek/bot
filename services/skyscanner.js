@@ -73,7 +73,7 @@ const browseRoutes = async (
 
   const res = await callAPI(`browseroutes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
   console.log(Object.keys(res));
-  console.log("Got it", res.Routes[0]);
+  console.log('Got it', res.Routes[0]);
   const options = await formatInfo(res.Routes, res.Places, res.Currencies[0]);
   console.log(options);
   return options;
