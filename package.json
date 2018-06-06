@@ -4,7 +4,8 @@
   "description": "A bot",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "test": "mocha",
+  "coverage": "nyc mocha"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,9 @@
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-mocha": "^5.0.0",
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
     "request": "^2.87.0",
     "zip-folder": "^1.0.0"
   }
