@@ -1,4 +1,10 @@
 {
+  "plugins": [
+    "mocha"
+  ],
+  "env": {
+    "mocha": true
+  },
   "rules" : {
     "no-param-reassign": 0
   },
