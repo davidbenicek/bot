@@ -162,7 +162,7 @@ const setUp = () => {
       }
 
       const { trip } = session.dialogData;
-      console.log('Trip', trip);
+      console.log("Trip", trip);
       // If there's no from param, ask!
       // session.send('I have failed. I am not strong enough. Please try again!');
 
