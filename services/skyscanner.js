@@ -26,8 +26,8 @@ const getLocationCode = async (query, country, currency, locale) => {
   return locations.Places[0];
 };
 
-const formatInfo = async (routes, places, currency, length) => {
-  if (!routes || !places || !currency) throw new Error('You must specify routes, places and a currency for formatInfo');
+const formatRoutesData = async (routes, places, currency, length) => {
+  if (!routes || !places || !currency) throw new Error('You must specify routes, places and a currency for formatRoutesData');
   const placesLookUp = {};
   places.forEach((place) => {
     placesLookUp[place.PlaceId] = {
@@ -54,6 +54,60 @@ const formatInfo = async (routes, places, currency, length) => {
   return offers.slice(0, 10);
 };
 
+
+const formatQuotesData = async (quotes, places, carriers, currency, length) => {
+  if (!quotes || !places || !carriers || !currency) throw new Error('You must specify quotes, places, carriers and a currency for formatQuotesData');
+  const placesLookUp = {};
+  places.forEach((place) => {
+    placesLookUp[place.PlaceId] = {
+      name: place.Name,
+      type: place.Type,
+      code: place.SkyscannerCode,
+    };
+  });
+
+  const carriersLookUp = {};
+  carriers.forEach((carrier) => {
+    carriersLookUp[carrier.CarrierId] = {
+      name: carrier.Name,
+    };
+  });
+
+  console.log(placesLookUp, carriersLookUp);
+
+  if (!length) length = 10;
+  quotes = quotes.slice(quotes.length - length);
+  console.log(quotes);
+  let offers = quotes.filter(quote => (quote.Direct)).map((quote) => {
+    console.log(quote.QuoteId);
+    let inbound;
+    if (quote.InboundLeg) {
+      inbound = {
+        carrier: carriersLookUp[quote.InboundLeg.CarrierIds[0]],
+        origin: placesLookUp[quote.InboundLeg.OriginId],
+        destination: placesLookUp[quote.InboundLeg.DestinationId],
+        date: quote.InboundLeg.DepartureDate,
+      };
+    }
+    return {
+      outbound: {
+        carrier: carriersLookUp[quote.OutboundLeg.CarrierIds[0]],
+        origin: placesLookUp[quote.OutboundLeg.OriginId],
+        destination: placesLookUp[quote.OutboundLeg.DestinationId],
+        date: quote.OutboundLeg.DepartureDate,
+      },
+      inbound,
+      currency,
+      price: quote.MinPrice,
+      quoteDate: quote.QuoteDateTime,
+    };
+  });
+  offers = offers.sort((a, b) => (
+    parseInt(a.price, 10) < parseInt(b.price, 10)
+  ));
+  return offers.slice(0, 10);
+};
+
 const browseRoutes = async (
   originAirport,
   destinationAirport,
@@ -73,8 +127,8 @@ const browseRoutes = async (
 
   const res = await callAPI(`browseroutes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
   console.log(Object.keys(res));
-  console.log("Got it", res.Routes[0]);
-  const options = await formatInfo(res.Routes, res.Places, res.Currencies[0]);
+  // console.log("Got it", res.Routes[0]);
+  const options = await formatRoutesData(res.Routes, res.Places, res.Currencies[0]);
   console.log(options);
   return options;
 };
@@ -98,10 +152,10 @@ const browseQuotes = async (
 
   const res = await callAPI(`browsequotes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
   console.log('Got it!', Object.keys(res));
-  // console.log("Got it", res.Quotes[0]);
-  // const options = await formatInfo(res.Routes, res.Places, res.Currencies[0]);
-  // console.log(options);
-  return res;
+  // console.log("Got it", res.Quotes, res.Places, res.Carriers, res.Currencies[0]);
+  const options = await formatQuotesData(res.Quotes, res.Places, res.Carriers, res.Currencies[0]);
+  console.log(options);
+  return options;
 };
 
 module.exports = {
