@@ -34,11 +34,10 @@ const formatRoutesIntoCards = (session, flights) => {
     .buttons([
       builder.CardAction.openUrl(session, 'https://www.skyscanner.net', 'Go to Skyscanner'),
     ]));
-    return flightsOverview;
+  return flightsOverview;
 };
 
 const formatQuotesIntoCards = (session, flights) => {
-  console.log(session, flights);
   const flightsOverview = [];
   flights.reverse().forEach((flight, i) => {
     flightsOverview.push(new builder.HeroCard(session)
