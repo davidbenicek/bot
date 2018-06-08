@@ -1,7 +1,7 @@
 
 const assert = require('assert');
 
-const formatter = require('../util/formatter');
+const formatter = require('../services/util/formatter');
 
 describe('Formatter', () => {
   describe('.ensureDateIsNotPast', () => {

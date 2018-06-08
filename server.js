@@ -28,13 +28,14 @@ const setUp = () => {
   server.post('/api/messages', connector.listen());
 
   /*----------------------------------------------------------------------------------------
-  * Bot Storage: This is a great spot to register the private state storage for your bot. 
+  * Bot Storage: This is a great spot to register the private state storage for your bot.
   * We provide adapters for Azure Table, CosmosDb, SQL Azure, or you can implement your own!
   * For samples and documentation, see: https://github.com/Microsoft/BotBuilder-Azure
   * ---------------------------------------------------------------------------------------- */
 
   // var tableName = 'botdata';
-  // var azureTableClient = new botbuilderAzure.AzureTableClient(tableName, process.env['AzureWebJobsStorage']);
+  // var azureTableClient =
+  // new botbuilderAzure.AzureTableClient(tableName, process.env['AzureWebJobsStorage']);
   // var tableStorage = new botbuilderAzure.AzureBotStorage({ gzipData: false }, azureTableClient);
 
   // Create your bot with a function to receive messages from the user
@@ -46,7 +47,7 @@ const setUp = () => {
   const { LUIS_APP_KEY } = process.env;
   const LUIS_API_HOSTNAME = process.env.LUIS_API_HOSTNAME || 'westus.api.cognitive.microsoft.com';
 
-  const LUIS_URL = `https://${LUIS_API_HOSTNAME}/luis/v2.0/apps/${LUIS_APP_ID}?subscription-key=${LUIS_APP_KEY}&verbose=true&timezoneOffset=0&q=`
+  const LUIS_URL = `https://${LUIS_API_HOSTNAME}/luis/v2.0/apps/${LUIS_APP_ID}?subscription-key=${LUIS_APP_KEY}&verbose=true&timezoneOffset=0&q=`;
 
   const recognizer = new builder.LuisRecognizer(LUIS_URL);
   const intents = new builder.IntentDialog({ recognizers: [recognizer] })

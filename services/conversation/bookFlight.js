@@ -130,9 +130,6 @@ const processRequest = async (session, reply) => {
       const fromSkyscannerCode = await skyscanner.getLocationCode(trip.origin);
       console.log(fromSkyscannerCode);
       const flights = await skyscanner.browseRoutes(fromSkyscannerCode.PlaceId);
-      // flights.reverse().forEach((flight) => {
-      //   flightsOverview += `From ${flight.origin.name} to ${flight.destination.name} for ${flight.currency.Symbol}${flight.price}!\n\n\n\n`;
-      // });
       const flightsOverview = formatter.formatRoutesIntoCards(session, flights);
       const message = new builder.Message(session)
         .attachmentLayout(builder.AttachmentLayout.carousel)
@@ -164,7 +161,6 @@ const processRequest = async (session, reply) => {
         .attachments(flightsOverview);
 
       session.send(message);
-      // session.send(`I found ${flights.Quotes.length} flights! Will be sending you details soon - one of them costs ${flights.Quotes[0].MinPrice}`);
     } catch (err) {
       console.log(err.message);
       session.send('I have failed. I am not strong enough. Please try again!');

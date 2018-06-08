@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "coverage": "nyc mocha"
+    "coverage": "nyc mocha",
+    "lint": "eslint './**/*.js'",
+    "fix-lint": "eslint './**/*.js'"
   },
   "repository": {
     "type": "git",

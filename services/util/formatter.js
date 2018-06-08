@@ -48,7 +48,7 @@ const formatQuotesIntoCards = (session, flights) => {
         builder.CardImage.create(session, 'https://secure.i.telegraph.co.uk/multimedia/archive/01692/flight-gill_1692367c.jpg'),
       ])
       .buttons([
-        builder.CardAction.openUrl(session, `https://www.skyscanner.net/`, 'Book!'),
+        builder.CardAction.openUrl(session, 'https://www.skyscanner.net/', 'Book!'),
       ]));
   });
   flightsOverview.push(new builder.HeroCard(session)
