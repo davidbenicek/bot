@@ -10,6 +10,8 @@ const ensureDateIsNotPast = (inputDates, boundaryDate) => {
 };
 
 const formatRoutesIntoCards = (session, flights) => {
+  if (!session) throw new Error('Must specify a session for building cards in formatRoutesIntoCards');
+  if (!flights) throw new Error('Must specify an array for flight for formatRoutesIntoCards');
   const flightsOverview = [];
   flights.reverse().forEach((flight) => {
     flightsOverview.push(new builder.HeroCard(session)
@@ -38,6 +40,8 @@ const formatRoutesIntoCards = (session, flights) => {
 };
 
 const formatQuotesIntoCards = (session, flights) => {
+  if (!session) throw new Error('Must specify a session for building cards in formatQuotesIntoCards');
+  if (!flights) throw new Error('Must specify an array for flight for formatQuotesIntoCards');
   const flightsOverview = [];
   flights.reverse().forEach((flight, i) => {
     flightsOverview.push(new builder.HeroCard(session)

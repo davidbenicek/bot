@@ -50,7 +50,6 @@ const loadSecrets = async () => {
   const SKYSCANNER_TOKEN = (await getSecret(client, KEY_VAULT_BASE_URL, 'SKYSCANNER-TOKEN', KEY_VAULT_SKYSCANNER_TOKEN_KEY_ID)).value;
   const MICROSOFT_APP_ID = (await getSecret(client, KEY_VAULT_BASE_URL, 'MICROSOFT-APP-ID', KEY_VAULT_MICROSOFT_APP_ID_KEY_ID)).value;
   const MICROSOFT_APP_PASSWORD = (await getSecret(client, KEY_VAULT_BASE_URL, 'MICROSOFT-APP-PASSWORD', KEY_VAULT_MICROSOFT_APP_PASSWORD_KEY_ID)).value;
-  console.log('got em all');
   return {
     LUIS_APP_ID,
     LUIS_APP_KEY,
