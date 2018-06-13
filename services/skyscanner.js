@@ -73,13 +73,10 @@ const formatQuotesData = async (quotes, places, carriers, currency, length) => {
     };
   });
 
-  console.log(placesLookUp, carriersLookUp);
 
   if (!length) length = 10;
   quotes = quotes.slice(quotes.length - length);
-  console.log(quotes);
   let offers = quotes.filter(quote => (quote.Direct)).map((quote) => {
-    console.log(quote.QuoteId);
     let inbound;
     if (quote.InboundLeg) {
       inbound = {
@@ -123,13 +120,9 @@ const browseRoutes = async (
   if (!country) country = 'UK';
   if (!currency) currency = 'GBP';
   if (!locale) locale = 'en-UK';
-  console.log(`browseroutes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
 
   const res = await callAPI(`browseroutes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
-  console.log(Object.keys(res));
-  // console.log("Got it", res.Routes[0]);
   const options = await formatRoutesData(res.Routes, res.Places, res.Currencies[0]);
-  console.log(options);
   return options;
 };
 
@@ -148,13 +141,9 @@ const browseQuotes = async (
   if (!country) country = 'UK';
   if (!currency) currency = 'GBP';
   if (!locale) locale = 'en-UK';
-  console.log(`browsequotes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
 
   const res = await callAPI(`browsequotes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
-  console.log('Got it!', Object.keys(res));
-  // console.log("Got it", res.Quotes, res.Places, res.Carriers, res.Currencies[0]);
   const options = await formatQuotesData(res.Quotes, res.Places, res.Carriers, res.Currencies[0]);
-  console.log(options);
   return options;
 };
 
@@ -162,4 +151,6 @@ module.exports = {
   browseRoutes,
   browseQuotes,
   getLocationCode,
+  formatRoutesData,
+  formatQuotesData,
 };

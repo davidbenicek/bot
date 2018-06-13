@@ -2,7 +2,7 @@
 const assert = require('assert');
 
 const formatter = require('../services/util/formatter');
-const data = require('./data/formatterTestData');
+const data = require('./data/formatterData');
 
 describe('Formatter', () => {
   describe('.ensureDateIsNotPast', () => {
