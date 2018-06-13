@@ -142,9 +142,7 @@ const browseQuotes = async (
   if (!currency) currency = 'GBP';
   if (!locale) locale = 'en-UK';
 
-  console.log(`browsequotes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
   const res = await module.exports.callAPI(`browsequotes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
-  console.log(res);
   const options = await formatQuotesData(res.Quotes, res.Places, res.Carriers, res.Currencies[0]);
   return options;
 };

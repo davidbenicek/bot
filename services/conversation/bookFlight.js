@@ -33,6 +33,7 @@ const promptOrigin = (session, reply, next) => {
 };
 
 const promptDestination = async (session, reply, next) => {
+  console.log(reply);
   if (reply.response) {
     session.dialogData.trip.origin = reply.response;
   }
@@ -52,7 +53,6 @@ const promptDestination = async (session, reply, next) => {
 };
 
 const promptOutbound = async (session, reply, next) => {
-  console.log('REPLY');
   console.log(reply);
   if (reply.response) {
     session.dialogData.trip.destination = reply.response;
@@ -72,8 +72,8 @@ const promptOutbound = async (session, reply, next) => {
 };
 
 const promptReturn = async (session, reply, next) => {
+  console.log(reply);
   if (reply.response) {
-    console.log('Recived date', reply.response);
     if (reply.response.toLowerCase() === 'anytime') {
       session.dialogData.trip.date1 = 'anytime';
     } else {
@@ -86,7 +86,6 @@ const promptReturn = async (session, reply, next) => {
   }
 
   const { trip } = session.dialogData;
-  console.log('Date', trip.date1);
   // If there's no from param, ask!
   if (!trip.date2) {
     try {
@@ -105,7 +104,6 @@ const promptReturn = async (session, reply, next) => {
 
 const processRequest = async (session, reply) => {
   if (reply.response) {
-    console.log(reply);
     const response = (typeof reply.response === 'string') ? reply.response : reply.response.entity;
     if (response.toLowerCase() === 'one way') {
       session.dialogData.trip.date2 = '';
@@ -121,14 +119,12 @@ const processRequest = async (session, reply) => {
   }
 
   const { trip } = session.dialogData;
-  console.log('Trip', trip);
   // If there's no from param, ask!
   // session.send('I have failed. I am not strong enough. Please try again!');
 
   if (!trip.destination || trip.destination.toLowerCase() === 'anywhere') {
     try {
       const fromSkyscannerCode = await skyscanner.getLocationCode(trip.origin);
-      console.log(fromSkyscannerCode);
       const flights = await skyscanner.browseRoutes(fromSkyscannerCode.PlaceId);
       const flightsOverview = formatter.formatRoutesIntoCards(session, flights);
       const message = new builder.Message(session)
@@ -144,7 +140,6 @@ const processRequest = async (session, reply) => {
     try {
       const fromSkyscannerCode = await skyscanner.getLocationCode(trip.origin);
       const toSkyscannerCode = await skyscanner.getLocationCode(trip.destination);
-      console.log(fromSkyscannerCode, toSkyscannerCode);
       const date1 = (typeof trip.date1 !== 'string' && 'value' in trip.date1) ? trip.date1.value : trip.date1;
       const date2 = (typeof trip.date2 !== 'string' && 'value' in trip.date2) ? trip.date2.value : trip.date2;
       const flights = await skyscanner.browseQuotes(
@@ -162,7 +157,7 @@ const processRequest = async (session, reply) => {
 
       session.send(message);
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
       session.send('I have failed. I am not strong enough. Please try again!');
     }
   }
