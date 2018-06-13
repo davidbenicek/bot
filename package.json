@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "coverage": "nyc mocha",
+    "coverage": "nyc --reporter=html --reporter=text mocha",
     "lint": "eslint './**/*.js'",
     "fix-lint": "eslint './**/*.js'"
   },
@@ -30,7 +30,8 @@
     "dotenv": "^5.0.1",
     "jshint": "^2.9.5",
     "request-promise-native": "^1.0.5",
-    "restify": "^6.3.4"
+    "restify": "^6.3.4",
+    "sinon": "^6.0.0"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
