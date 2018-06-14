@@ -3,6 +3,11 @@ const expected = {};
 
 const blankSession = {
   gettext: text => (text),
+  dialogData: {
+    trip: {
+      destination: 'somewhere',
+    },
+  },
 };
 
 /* Testing ensureDateIsNotPast */
