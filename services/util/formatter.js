@@ -71,7 +71,7 @@ const formatQuotesIntoCards = (session, flights) => new Promise(async (resolve) 
         builder.CardImage.create(session, 'https://palife.co.uk/wp-content/uploads/2017/08/skyscanner.jpg'),
       ])
       .buttons([
-        builder.CardAction.openUrl(session, 'https://www.skyscanner.net', 'More on  Skyscanner'),
+        builder.CardAction.openUrl(session, 'https://www.skyscanner.net', 'More on Skyscanner'),
       ]));
     resolve(flightsOverview);
   });
