@@ -25,7 +25,7 @@ const formatRoutesIntoCards = async (session, flights) => new Promise(async (res
         builder.CardImage.create(session, image),
       ])
       .buttons([
-        builder.CardAction.openUrl(session, `https://www.skyscanner.net/transport/flights/${flight.origin.code}/${flight.destination.code}/`, 'Book!'),
+        builder.CardAction.openUrl(session, `https://www.skyscanner.net/transport/flights/${flight.origin.code}/${flight.destination.code}/`, 'Go to Skyscanner'),
       ]));
     return Promise.resolve();
   });
@@ -38,7 +38,7 @@ const formatRoutesIntoCards = async (session, flights) => new Promise(async (res
         builder.CardImage.create(session, 'https://palife.co.uk/wp-content/uploads/2017/08/skyscanner.jpg'),
       ])
       .buttons([
-        builder.CardAction.openUrl(session, 'https://www.skyscanner.net', 'Go to Skyscanner'),
+        builder.CardAction.openUrl(session, 'https://www.skyscanner.net', 'More on Skyscanner'),
       ]));
     resolve(flightsOverview);
   });
@@ -58,7 +58,7 @@ const formatQuotesIntoCards = (session, flights) => new Promise(async (resolve) 
         builder.CardImage.create(session, image),
       ])
       .buttons([
-        builder.CardAction.openUrl(session, 'https://www.skyscanner.net/', 'Book!'),
+        builder.CardAction.openUrl(session, 'https://www.skyscanner.net/', 'Go to Skyscanner'),
       ]));
     return Promise.resolve();
   });
@@ -71,7 +71,7 @@ const formatQuotesIntoCards = (session, flights) => new Promise(async (resolve) 
         builder.CardImage.create(session, 'https://palife.co.uk/wp-content/uploads/2017/08/skyscanner.jpg'),
       ])
       .buttons([
-        builder.CardAction.openUrl(session, 'https://www.skyscanner.net', 'Go to Skyscanner'),
+        builder.CardAction.openUrl(session, 'https://www.skyscanner.net', 'More on  Skyscanner'),
       ]));
     resolve(flightsOverview);
   });
