@@ -126,7 +126,7 @@ const processRequest = async (session, reply) => {
     try {
       const fromSkyscannerCode = await skyscanner.getLocationCode(trip.origin);
       const flights = await skyscanner.browseRoutes(fromSkyscannerCode.PlaceId);
-      const flightsOverview = formatter.formatRoutesIntoCards(session, flights);
+      const flightsOverview = await formatter.formatRoutesIntoCards(session, flights);
       const message = new builder.Message(session)
         .attachmentLayout(builder.AttachmentLayout.carousel)
         .attachments(flightsOverview);
@@ -149,7 +149,7 @@ const processRequest = async (session, reply) => {
         date2,
       );
 
-      const flightsOverview = formatter.formatQuotesIntoCards(session, flights);
+      const flightsOverview = await formatter.formatQuotesIntoCards(session, flights);
 
       const message = new builder.Message(session)
         .attachmentLayout(builder.AttachmentLayout.carousel)
