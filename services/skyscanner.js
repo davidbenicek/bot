@@ -37,7 +37,7 @@ const formatRoutesData = async (routes, places, currency, length) => {
     };
   });
 
-  if (!length) length = 10;
+  if (!length) length = 9;
   routes = routes.sort((a, b) => (
     a.Price < b.Price
   )).slice(routes.length - length);
@@ -51,7 +51,7 @@ const formatRoutesData = async (routes, places, currency, length) => {
   offers = offers.sort((a, b) => (
     parseInt(a.price, 10) < parseInt(b.price, 10)
   ));
-  return offers.slice(0, 10);
+  return offers.slice(0, length);
 };
 
 
@@ -74,7 +74,7 @@ const formatQuotesData = async (quotes, places, carriers, currency, length) => {
   });
 
 
-  if (!length) length = 10;
+  if (!length) length = 9;
   quotes = quotes.slice(quotes.length - length);
   let offers = quotes.filter(quote => (quote.Direct)).map((quote) => {
     let inbound;
@@ -102,7 +102,7 @@ const formatQuotesData = async (quotes, places, carriers, currency, length) => {
   offers = offers.sort((a, b) => (
     parseInt(a.price, 10) < parseInt(b.price, 10)
   ));
-  return offers.slice(0, 10);
+  return offers.slice(0, length);
 };
 
 const browseRoutes = async (
