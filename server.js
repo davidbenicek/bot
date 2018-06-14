@@ -54,14 +54,11 @@ const setUp = () => {
   const intents = new builder.IntentDialog({ recognizers: [recognizer] })
     .matches('Greeting', (session) => {
       session.send('Hey there! How can I help?');
-      // builder.Prompts.choice(session, 'Some of the things you could do are:',
-      // ['✈️ Book a flight', '📍 Ask about things to do in places'],
-      // { listStyle: builder.ListStyle.button }); // TODO: Add one way button
       const msg = new builder.Message(session)
         .text('Some of the things you could do are:')
         .suggestedActions(builder.SuggestedActions.create(session, [
           builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book a flight'),
-          builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Ask about things to do in places'),
+          builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Things to do'),
         ]));
       session.send(msg);
     })
