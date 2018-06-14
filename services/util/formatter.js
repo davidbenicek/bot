@@ -48,8 +48,8 @@ const formatQuotesIntoCards = (session, flights) => new Promise(async (resolve) 
   if (!session) throw new Error('Must specify a session for building cards in formatQuotesIntoCards');
   if (!flights) throw new Error('Must specify an array for flight for formatQuotesIntoCards');
   const flightsOverview = [];
-  const image = await unsplash.getImage(flights[0].outbound.destination.name);
-  const promises = flights.reverse().map((flight, i) => {
+  const promises = flights.reverse().map(async (flight, i) => {
+    const image = await unsplash.getImage(flights[0].outbound.destination.name);
     flightsOverview.push(new builder.HeroCard(session)
       .title(`Option #${i + 1}: for ${flight.currency.Symbol}${flight.price}`)
       .subtitle(`Flying out with ${flight.outbound.carrier.name} ${(flight.inbound) ? `and back with ${flight.inbound.carrier.name}` : ''}`)
