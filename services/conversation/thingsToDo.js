@@ -1,5 +1,7 @@
 const builder = require('botbuilder');
 
+const unsplash = require('../unsplash');
+
 const promptDestination = (session, reply, next) => {
   console.log(reply);
   // Try get all the data from the initial user query
@@ -25,9 +27,25 @@ const processRequest = async (session, reply) => {
   if (reply.response) {
     session.dialogData.trip.destination = reply.response;
   }
-
   try {
-    session.send(`Check out some of the sweet info here https://wikitravel.org/en/${session.dialogData.trip.destination}#See`);
+    const image = await unsplash.getImage(session.dialogData.trip.destination);
+    const card = [new builder.HeroCard(session)
+      .title(`Things to do in ${session.dialogData.trip.destination}`)
+      .subtitle('Provided by WikiTravel')
+      .text(`We've put together some great tips for you in ${session.dialogData.trip.destination}`)
+      .images([
+        builder.CardImage.create(
+          session,
+          image,
+        ),
+      ])
+      .buttons([
+        builder.CardAction.openUrl(session, `https://wikitravel.org/en/${session.dialogData.trip.destination}#See`, 'Go to WikiTravel'),
+      ])];
+    const message = new builder.Message(session)
+      .attachmentLayout(builder.AttachmentLayout.list)
+      .attachments(card);
+    session.send(message);
   } catch (err) {
     console.log(err);
     session.send('I have failed. I am not strong enough. Please try again!');
