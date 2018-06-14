@@ -147,7 +147,7 @@ const twoQuotesWithReturn = [{
 }];
 
 expected.twoQuotesWithReturn = [{
-  title: 'Option #1: for £99',
+  title: 'To somewhere for £99',
   subtitle: 'Flying out with carrier_out2 and back with carrier_in2',
   text: 'Fly from outbound_origin2 to outbound_destination2 and back from inbound_origin2 to  inbound_destination2',
   buttons: [
@@ -163,7 +163,7 @@ expected.twoQuotesWithReturn = [{
     },
   ],
 }, {
-  title: 'Option #2: for £100',
+  title: 'To somewhere for £100',
   subtitle: 'Flying out with carrier_out1 and back with carrier_in1',
   text: 'Fly from outbound_origin1 to outbound_destination1 and back from inbound_origin1 to  inbound_destination1',
   buttons: [
@@ -246,7 +246,7 @@ expected.twoQuotesOneWay = [{
   ],
   subtitle: 'Flying out with carrier_out2 ',
   text: 'Fly from outbound_origin2 to outbound_destination2 ',
-  title: 'Option #1: for £99',
+  title: 'To somewhere for £99',
 }, {
   buttons: [
     {
@@ -262,7 +262,7 @@ expected.twoQuotesOneWay = [{
   ],
   subtitle: 'Flying out with carrier_out1 ',
   text: 'Fly from outbound_origin1 to outbound_destination1 ',
-  title: 'Option #2: for £100',
+  title: 'To somewhere for £100',
 }, {
   buttons: [
     {
