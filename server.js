@@ -5,6 +5,7 @@ require('dotenv').load();
 const secretsManager = require('./services/util/secretsManager');
 
 const bookFlight = require('./services/conversation/bookFlight');
+const thingsToDo = require('./services/conversation/thingsToDo');
 
 // const botbuilderAzure = require("botbuilder-azure");
 const server = restify.createServer();
@@ -60,6 +61,10 @@ const setUp = () => {
       bookFlight.promptOutbound,
       bookFlight.promptReturn,
       bookFlight.processRequest,
+    ])
+    .matches('Info.Locaiton', [
+      thingsToDo.promptDestination,
+      thingsToDo.processRequest,
     ])
     .onDefault((session) => {
       session.send('Sorry pal, I did not understand \'%s\'.', session.message.text);
