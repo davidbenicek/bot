@@ -54,6 +54,16 @@ const setUp = () => {
   const intents = new builder.IntentDialog({ recognizers: [recognizer] })
     .matches('Greeting', (session) => {
       session.send('Hey there! How can I help?');
+      // builder.Prompts.choice(session, 'Some of the things you could do are:',
+      // ['✈️ Book a flight', '📍 Ask about things to do in places'],
+      // { listStyle: builder.ListStyle.button }); // TODO: Add one way button
+      const msg = new builder.Message(session)
+        .text('Some of the things you could do are:')
+        .suggestedActions(builder.SuggestedActions.create(session, [
+          builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book a flight'),
+          builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Ask about things to do in places'),
+        ]));
+      session.send(msg);
     })
     .matches('Book.Flight', [
       bookFlight.promptOrigin,
@@ -62,12 +72,12 @@ const setUp = () => {
       bookFlight.promptReturn,
       bookFlight.processRequest,
     ])
-    .matches('Info.Locaiton', [
+    .matches('Info.Location', [
       thingsToDo.promptDestination,
       thingsToDo.processRequest,
     ])
     .onDefault((session) => {
-      session.send('Sorry pal, I did not understand \'%s\'.', session.message.text);
+      session.send('Sorry buddy, I did not understand \'%s\'. At least you don\'t have to be worried about robots taking over soon!', session.message.text);
     });
 
   bot.dialog('/', intents);

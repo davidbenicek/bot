@@ -13,7 +13,7 @@ const promptDestination = (session, reply, next) => {
   }
 
   // If there's no from param, ask!
-  if (!session.dialogData.trip.destination) {
+  if (!session.dialogData.trip.destination || session.dialogData.trip.destination === 'anywhere') {
     builder.Prompts.text(session, 'Which city are you interested in?'); // TODO: Add send location button
   } else {
     next();
