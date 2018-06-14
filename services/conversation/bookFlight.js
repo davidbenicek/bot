@@ -6,6 +6,7 @@ const skyscanner = require('../skyscanner');
 
 const promptOrigin = (session, reply, next) => {
   console.log(reply);
+  session.sendTyping();
   // Try get all the data from the initial user query
   const origin = builder.EntityRecognizer.findEntity(reply.entities, 'place::origin');
   const destination = builder.EntityRecognizer.findEntity(reply.entities, 'place::destination');
@@ -34,6 +35,7 @@ const promptOrigin = (session, reply, next) => {
 
 const promptDestination = async (session, reply, next) => {
   console.log(reply);
+  session.sendTyping();
   if (reply.response) {
     session.dialogData.trip.origin = reply.response;
   }
@@ -54,6 +56,7 @@ const promptDestination = async (session, reply, next) => {
 
 const promptOutbound = async (session, reply, next) => {
   console.log(reply);
+  session.sendTyping();
   if (reply.response) {
     session.dialogData.trip.destination = reply.response;
   }
@@ -73,6 +76,7 @@ const promptOutbound = async (session, reply, next) => {
 
 const promptReturn = async (session, reply, next) => {
   console.log(reply);
+  session.sendTyping();
   if (reply.response) {
     if (reply.response.toLowerCase() === 'anytime') {
       session.dialogData.trip.date1 = 'anytime';
@@ -103,6 +107,7 @@ const promptReturn = async (session, reply, next) => {
 };
 
 const processRequest = async (session, reply) => {
+  session.sendTyping();
   if (reply.response) {
     const response = (typeof reply.response === 'string') ? reply.response : reply.response.entity;
     if (response.toLowerCase() === 'one way') {

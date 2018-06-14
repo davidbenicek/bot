@@ -14,7 +14,8 @@ const getImage = async (query) => {
     json: true,
   };
   const res = await request(options);
-  return res.results[0].urls.regular;
+  const index = Math.floor(Math.random() * (res.results.length - 1));
+  return res.results[index].urls.regular;
 };
 
 module.exports = {

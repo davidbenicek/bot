@@ -4,6 +4,7 @@ const unsplash = require('../unsplash');
 
 const promptDestination = (session, reply, next) => {
   console.log(reply);
+  session.sendTyping();
   // Try get all the data from the initial user query
   const destination = builder.EntityRecognizer.findEntity(reply.entities, 'place::destination');
   if (destination) {
@@ -24,6 +25,7 @@ const promptDestination = (session, reply, next) => {
 
 const processRequest = async (session, reply) => {
   console.log(reply);
+  session.sendTyping();
   if (reply.response) {
     session.dialogData.trip.destination = reply.response;
   }
