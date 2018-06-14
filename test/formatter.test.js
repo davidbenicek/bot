@@ -33,7 +33,7 @@ describe('Formatter', () => {
       sinon.restore();
     });
     it('should return three cards with properly formated buttons', async () => {
-      const stub = sinon.stub(unsplash, 'getImage').resolves('some image');
+      sinon.stub(unsplash, 'getImage').resolves('some image');
       const cards = await formatter.formatRoutesIntoCards(data.blankSession, data.twoRoutes);
       assert.equal(cards.length, 3);
       assert.deepEqual(
@@ -71,10 +71,13 @@ describe('Formatter', () => {
     afterEach(() => {
       sinon.restore();
     });
-    
+
     it('should return three cards with return flights', async () => {
-      const stub = sinon.stub(unsplash, 'getImage').resolves('some image');
-      const cards = await formatter.formatQuotesIntoCards(data.blankSession, data.twoQuotesWithReturn);
+      sinon.stub(unsplash, 'getImage').resolves('some image');
+      const cards = await formatter.formatQuotesIntoCards(
+        data.blankSession,
+        data.twoQuotesWithReturn,
+      );
       assert.equal(cards.length, 3);
       assert.deepEqual(
         cards[0].data.content,
@@ -91,8 +94,11 @@ describe('Formatter', () => {
     });
 
     it('should return three cards with one way flights', async () => {
-      const stub = sinon.stub(unsplash, 'getImage').resolves('some image');
-      const cards = await formatter.formatQuotesIntoCards(data.blankSession, data.twoQuotesOneWay);
+      sinon.stub(unsplash, 'getImage').resolves('some image');
+      const cards = await formatter.formatQuotesIntoCards(
+        data.blankSession,
+        data.twoQuotesOneWay,
+      );
       assert.equal(cards.length, 3);
       assert.deepEqual(
         cards[0].data.content,
