@@ -62,7 +62,7 @@ const promptOutbound = async (session, reply, next) => {
   // If there's no from param, ask!
   if (!trip.date1) {
     try {
-      builder.Prompts.text(session, 'When would you like to fly out? (anytime is an option)'); // TODO: Add anytime button
+      builder.Prompts.text(session, 'What date would you like to fly out on? (anytime is an option)'); // TODO: Add anytime button
     } catch (err) {
       console.log(err);
     }
@@ -92,7 +92,7 @@ const promptReturn = async (session, reply, next) => {
       if (trip.date1 === 'anytime') {
         builder.Prompts.choice(session, 'When are you returning?', ['anytime', 'one way'], { listStyle: builder.ListStyle.button }); // TODO: Add one way button
       } else {
-        builder.Prompts.text(session, 'When would you like to fly back? (one way is a valid option)'); // TODO: Add one way button
+        builder.Prompts.text(session, 'What date would you like to fly back on? (one way is a valid option)'); // TODO: Add one way button
       }
     } catch (err) {
       console.log(err);
@@ -126,7 +126,7 @@ const processRequest = async (session, reply) => {
     try {
       const fromSkyscannerCode = await skyscanner.getLocationCode(trip.origin);
       const flights = await skyscanner.browseRoutes(fromSkyscannerCode.PlaceId);
-      const flightsOverview = formatter.formatRoutesIntoCards(session, flights);
+      const flightsOverview = await formatter.formatRoutesIntoCards(session, flights);
       const message = new builder.Message(session)
         .attachmentLayout(builder.AttachmentLayout.carousel)
         .attachments(flightsOverview);
@@ -149,7 +149,7 @@ const processRequest = async (session, reply) => {
         date2,
       );
 
-      const flightsOverview = formatter.formatQuotesIntoCards(session, flights);
+      const flightsOverview = await formatter.formatQuotesIntoCards(session, flights);
 
       const message = new builder.Message(session)
         .attachmentLayout(builder.AttachmentLayout.carousel)
@@ -158,7 +158,8 @@ const processRequest = async (session, reply) => {
       session.send(message);
     } catch (err) {
       console.log(err);
-      session.send('I have failed. I am not strong enough. Please try again!');
+      session.send('Something has wrong. Please try again!');
+      session.send(err.message); // TODO: This needs to be handeled better
     }
   }
 };

@@ -21,11 +21,11 @@ const luisTomorrow = { timex: 'XXXX-WXX-3', type: 'date', value: dateTomorrow };
 
 const twoRoutes = [{
   destination: {
-    name: 'destination1',
+    name: 'Prague',
     code: 'destination_code1',
   },
   origin: {
-    name: 'origin1',
+    name: 'London',
     code: 'origin_code1',
   },
   currency: {
@@ -34,11 +34,11 @@ const twoRoutes = [{
   price: 100,
 }, {
   destination: {
-    name: 'destination2',
+    name: 'Berlin',
     code: 'destination_code2',
   },
   origin: {
-    name: 'origin2',
+    name: 'Rome',
     code: 'origin_code2',
   },
   currency: {
@@ -48,53 +48,38 @@ const twoRoutes = [{
 }];
 
 expected.twoRoutes = [{
-  buttons: [
-    {
-      title: 'Book!',
-      type: 'openUrl',
-      value: 'https://www.skyscanner.net/transport/flights/origin_code2/destination_code2/',
-    },
-  ],
-  images: [
-    {
-      url: 'https://secure.i.telegraph.co.uk/multimedia/archive/01692/flight-gill_1692367c.jpg',
-    },
-  ],
-  subtitle: 'How do you fancy a trip to  destination2?',
-  text: 'Fly from origin2 to destination2 for £99!',
-  title: 'destination2',
+  title: 'Berlin',
+  subtitle: 'How do you fancy a trip to  Berlin?',
+  text: 'Fly from Rome to Berlin for £99!',
+  images: [{ url: 'some image' }],
+  buttons: [{
+    type: 'openUrl',
+    value: 'https://www.skyscanner.net/transport/flights/origin_code2/destination_code2/',
+    title: 'Go to Skyscanner',
+  }],
 }, {
-  buttons: [
-    {
-      title: 'Book!',
-      type: 'openUrl',
-      value: 'https://www.skyscanner.net/transport/flights/origin_code1/destination_code1/',
-    },
-  ],
-  images: [
-    {
-      url: 'https://secure.i.telegraph.co.uk/multimedia/archive/01692/flight-gill_1692367c.jpg',
-    },
-  ],
-  subtitle: 'How do you fancy a trip to  destination1?',
-  text: 'Fly from origin1 to destination1 for £100!',
-  title: 'destination1',
+  title: 'Prague',
+  subtitle: 'How do you fancy a trip to  Prague?',
+  text: 'Fly from London to Prague for £100!',
+  images: [{ url: 'some image' }],
+  buttons:
+ [{
+   type: 'openUrl',
+   value: 'https://www.skyscanner.net/transport/flights/origin_code1/destination_code1/',
+   title: 'Go to Skyscanner',
+ }],
 }, {
-  buttons: [
-    {
-      title: 'Go to Skyscanner',
-      type: 'openUrl',
-      value: 'https://www.skyscanner.net',
-    },
-  ],
-  images: [
-    {
-      url: 'https://palife.co.uk/wp-content/uploads/2017/08/skyscanner.jpg',
-    },
-  ],
+  title: 'Book more trips with Skyscanner',
   subtitle: 'The worlds travel engine',
   text: 'There are plenty other great deals for flights, hotels, car hire and rail on the Skyscanner website',
-  title: 'Book more trips with Skyscanner',
+  images:
+ [{ url: 'https://palife.co.uk/wp-content/uploads/2017/08/skyscanner.jpg' }],
+  buttons:
+ [{
+   type: 'openUrl',
+   value: 'https://www.skyscanner.net',
+   title: 'More on Skyscanner',
+ }],
 },
 ];
 
@@ -162,14 +147,14 @@ expected.twoQuotesWithReturn = [{
   text: 'Fly from outbound_origin2 to outbound_destination2 and back from inbound_origin2 to  inbound_destination2',
   buttons: [
     {
-      title: 'Book!',
+      title: 'Go to Skyscanner',
       type: 'openUrl',
       value: 'https://www.skyscanner.net/',
     },
   ],
   images: [
     {
-      url: 'https://secure.i.telegraph.co.uk/multimedia/archive/01692/flight-gill_1692367c.jpg',
+      url: 'some image',
     },
   ],
 }, {
@@ -178,20 +163,20 @@ expected.twoQuotesWithReturn = [{
   text: 'Fly from outbound_origin1 to outbound_destination1 and back from inbound_origin1 to  inbound_destination1',
   buttons: [
     {
-      title: 'Book!',
+      title: 'Go to Skyscanner',
       type: 'openUrl',
       value: 'https://www.skyscanner.net/',
     },
   ],
   images: [
     {
-      url: 'https://secure.i.telegraph.co.uk/multimedia/archive/01692/flight-gill_1692367c.jpg',
+      url: 'some image',
     },
   ],
 }, {
   buttons: [
     {
-      title: 'Go to Skyscanner',
+      title: 'More on Skyscanner',
       type: 'openUrl',
       value: 'https://www.skyscanner.net',
     },
@@ -244,14 +229,14 @@ const twoQuotesOneWay = [{
 expected.twoQuotesOneWay = [{
   buttons: [
     {
-      title: 'Book!',
+      title: 'Go to Skyscanner',
       type: 'openUrl',
       value: 'https://www.skyscanner.net/',
     },
   ],
   images: [
     {
-      url: 'https://secure.i.telegraph.co.uk/multimedia/archive/01692/flight-gill_1692367c.jpg',
+      url: 'some image',
     },
   ],
   subtitle: 'Flying out with carrier_out2 ',
@@ -260,14 +245,14 @@ expected.twoQuotesOneWay = [{
 }, {
   buttons: [
     {
-      title: 'Book!',
+      title: 'Go to Skyscanner',
       type: 'openUrl',
       value: 'https://www.skyscanner.net/',
     },
   ],
   images: [
     {
-      url: 'https://secure.i.telegraph.co.uk/multimedia/archive/01692/flight-gill_1692367c.jpg',
+      url: 'some image',
     },
   ],
   subtitle: 'Flying out with carrier_out1 ',
@@ -276,7 +261,7 @@ expected.twoQuotesOneWay = [{
 }, {
   buttons: [
     {
-      title: 'Go to Skyscanner',
+      title: 'More on Skyscanner',
       type: 'openUrl',
       value: 'https://www.skyscanner.net',
     },

@@ -1,7 +1,10 @@
 
 const assert = require('assert');
+const sinon = require('sinon');
 
 const formatter = require('../services/util/formatter');
+const unsplash = require('../services/unsplash');
+
 const data = require('./data/formatterData');
 
 describe('Formatter', () => {
@@ -26,8 +29,12 @@ describe('Formatter', () => {
   });
 
   describe('.formatRoutesIntoCards', () => {
-    it('should return three cards with properly formated buttons', () => {
-      const cards = formatter.formatRoutesIntoCards(data.blankSession, data.twoRoutes);
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('should return three cards with properly formated buttons', async () => {
+      sinon.stub(unsplash, 'getImage').resolves('some image');
+      const cards = await formatter.formatRoutesIntoCards(data.blankSession, data.twoRoutes);
       assert.equal(cards.length, 3);
       assert.deepEqual(
         cards[0].data.content,
@@ -61,8 +68,16 @@ describe('Formatter', () => {
   });
 
   describe('.formatQuotesIntoCards', () => {
-    it('should return three cards with return flights', () => {
-      const cards = formatter.formatQuotesIntoCards(data.blankSession, data.twoQuotesWithReturn);
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('should return three cards with return flights', async () => {
+      sinon.stub(unsplash, 'getImage').resolves('some image');
+      const cards = await formatter.formatQuotesIntoCards(
+        data.blankSession,
+        data.twoQuotesWithReturn,
+      );
       assert.equal(cards.length, 3);
       assert.deepEqual(
         cards[0].data.content,
@@ -78,8 +93,12 @@ describe('Formatter', () => {
       );
     });
 
-    it('should return three cards with one way flights', () => {
-      const cards = formatter.formatQuotesIntoCards(data.blankSession, data.twoQuotesOneWay);
+    it('should return three cards with one way flights', async () => {
+      sinon.stub(unsplash, 'getImage').resolves('some image');
+      const cards = await formatter.formatQuotesIntoCards(
+        data.blankSession,
+        data.twoQuotesOneWay,
+      );
       assert.equal(cards.length, 3);
       assert.deepEqual(
         cards[0].data.content,

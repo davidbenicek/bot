@@ -5,6 +5,7 @@ require('dotenv').load();
 const secretsManager = require('./services/util/secretsManager');
 
 const bookFlight = require('./services/conversation/bookFlight');
+const thingsToDo = require('./services/conversation/thingsToDo');
 
 // const botbuilderAzure = require("botbuilder-azure");
 const server = restify.createServer();
@@ -53,6 +54,13 @@ const setUp = () => {
   const intents = new builder.IntentDialog({ recognizers: [recognizer] })
     .matches('Greeting', (session) => {
       session.send('Hey there! How can I help?');
+      const msg = new builder.Message(session)
+        .text('Some of the things you could do are:')
+        .suggestedActions(builder.SuggestedActions.create(session, [
+          builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book a flight'),
+          builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Things to do'),
+        ]));
+      session.send(msg);
     })
     .matches('Book.Flight', [
       bookFlight.promptOrigin,
@@ -61,8 +69,12 @@ const setUp = () => {
       bookFlight.promptReturn,
       bookFlight.processRequest,
     ])
+    .matches('Info.Location', [
+      thingsToDo.promptDestination,
+      thingsToDo.processRequest,
+    ])
     .onDefault((session) => {
-      session.send('Sorry pal, I did not understand \'%s\'.', session.message.text);
+      session.send('Sorry buddy, I did not understand \'%s\'. At least you don\'t have to be worried about robots taking over soon!', session.message.text);
     });
 
   bot.dialog('/', intents);
