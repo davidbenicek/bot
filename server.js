@@ -82,7 +82,7 @@ const setUp = () => {
         visa.processRequest(session);
       } else {
         session.send('Sorry buddy, I did not understand \'%s\'...', session.message.text);
-        session.send('At least you don\'t have to be worried about robots taking over soon!', session.message.text);
+        session.send('At least you don\'t have to be worried about robots taking over soon!');
       }
     });
 

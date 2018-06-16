@@ -245,6 +245,7 @@ const promptsNationality = (session) => {
       ],
     },
   };
+
   const visaMsg = new builder.Message(session).addAttachment(mesasge);
   session.send('Please select your nationality or residence status from the dropdown bellow:');
   session.send(visaMsg);
