@@ -1,6 +1,6 @@
 const builder = require('botbuilder');
 
-const unsplash = require('../unsplash');
+const unsplash = require('./unsplash');
 
 const ensureDateIsNotPast = (inputDates, boundaryDate) => {
   if (!inputDates) throw new Error('Must specify array of at least one input date');

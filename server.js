@@ -2,11 +2,11 @@ const restify = require('restify');
 const builder = require('botbuilder');
 require('dotenv').load();
 
-const secretsManager = require('./services/util/secretsManager');
+const secretsManager = require('./services/processing/secretsManager');
 
 const bookFlight = require('./services/conversation/bookFlight');
 const thingsToDo = require('./services/conversation/thingsToDo');
-
+const visa = require('./services/conversation/visa');
 // const botbuilderAzure = require("botbuilder-azure");
 const server = restify.createServer();
 server.listen(process.env.PORT || 3978, () => {
@@ -59,6 +59,7 @@ const setUp = () => {
         .suggestedActions(builder.SuggestedActions.create(session, [
           builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book a flight'),
           builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Things to do'),
+          builder.CardAction.imBack(session, 'Send me visa information', '🛂Visa info'),
         ]));
       session.send(msg);
     })
@@ -73,8 +74,16 @@ const setUp = () => {
       thingsToDo.promptDestination,
       thingsToDo.processRequest,
     ])
+    .matches('Info.Visa', [
+      visa.promptsNationality,
+    ])
     .onDefault((session) => {
-      session.send('Sorry buddy, I did not understand \'%s\'. At least you don\'t have to be worried about robots taking over soon!', session.message.text);
+      if (session.message.value && session.message.value.type === 'visaCountrySelect') {
+        visa.processRequest(session);
+      } else {
+        session.send('Sorry buddy, I did not understand \'%s\'...', session.message.text);
+        session.send('At least you don\'t have to be worried about robots taking over soon!', session.message.text);
+      }
     });
 
   bot.dialog('/', intents);

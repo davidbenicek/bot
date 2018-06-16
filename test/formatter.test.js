@@ -2,8 +2,8 @@
 const assert = require('assert');
 const sinon = require('sinon');
 
-const formatter = require('../services/util/formatter');
-const unsplash = require('../services/unsplash');
+const formatter = require('../services/processing/formatter');
+const unsplash = require('../services/processing/unsplash');
 
 const data = require('./data/formatterData');
 
