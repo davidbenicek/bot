@@ -1,6 +1,6 @@
 const builder = require('botbuilder');
 
-const unsplash = require('../unsplash');
+const unsplash = require('../processing/unsplash');
 
 const promptDestination = (session, reply, next) => {
   console.log(reply);

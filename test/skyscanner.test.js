@@ -2,7 +2,7 @@
 const assert = require('assert');
 const sinon = require('sinon');
 
-const skyscanner = require('../services/skyscanner');
+const skyscanner = require('../services/processing/skyscanner');
 const data = require('./data/skyscannerData');
 
 

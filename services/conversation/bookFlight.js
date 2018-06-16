@@ -1,7 +1,7 @@
 const builder = require('botbuilder');
 
-const formatter = require('../util/formatter');
-const skyscanner = require('../skyscanner');
+const formatter = require('../processing/formatter');
+const skyscanner = require('../processing/skyscanner');
 
 
 const promptOrigin = (session, reply, next) => {
