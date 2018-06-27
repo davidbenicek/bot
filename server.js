@@ -59,9 +59,9 @@ const setUp = () => {
         .text('Some of the things you could do are:')
         .suggestedActions(builder.SuggestedActions.create(session, [
           builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book a flight'),
+          builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation'),
           builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Things to do'),
           builder.CardAction.imBack(session, 'Send me visa information', '🛂 Visa info'),
-          builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation'),
         ]));
       session.send(msg);
     })
