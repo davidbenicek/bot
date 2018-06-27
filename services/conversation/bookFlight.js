@@ -106,7 +106,7 @@ const promptReturn = async (session, reply, next) => {
   }
 };
 
-const processRequest = async (session, reply) => {
+const processRequest = async (session, reply, next) => {
   session.sendTyping();
   if (reply.response) {
     const response = (typeof reply.response === 'string') ? reply.response : reply.response.entity;
@@ -137,6 +137,7 @@ const processRequest = async (session, reply) => {
         .attachments(flightsOverview);
 
       session.send(message);
+      setTimeout(next, 5000);
     } catch (err) {
       console.log(err);
       session.send('I am so sorry, I goofed up. Try again plase!');
@@ -161,12 +162,27 @@ const processRequest = async (session, reply) => {
         .attachments(flightsOverview);
 
       session.send(message);
+      setTimeout(next, 5000);
     } catch (err) {
       console.log(err);
       session.send('Something has wrong. Please try again!');
       session.send(err.message); // TODO: This needs to be handeled better
     }
   }
+};
+
+const upsell = (session) => {
+  if (session.dialogData.trip.destination.toLowerCase() !== 'anywhere') {
+    session.send(`Ah, you're going to ${session.dialogData.trip.destination}?! I'm so jelous 😣😣😣`);
+  }
+  const msg = new builder.Message(session)
+    .text('What`s next? 🤔🤔🤔')
+    .suggestedActions(builder.SuggestedActions.create(session, [
+      builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation!'),
+      builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Find things to do'),
+      builder.CardAction.imBack(session, 'Send me visa information', '🛂 Check your visa info'),
+    ]));
+  session.send(msg);
 };
 
 
@@ -176,5 +192,6 @@ module.exports = {
   promptOutbound,
   promptReturn,
   processRequest,
+  upsell,
 };
 
