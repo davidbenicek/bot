@@ -217,7 +217,6 @@ const VISA_COUNTRIES = ['Abkhaz citizens',
   'Zimbabwean citizens'];
 
 const promptsNationality = (session) => {
-  console.log(session.message.address.channelId);
   if (session.message.address.channelId !== 'emulator') {
     builder.Prompts.text(session, 'What is your nationality?');
   } else {
