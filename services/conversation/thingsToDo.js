@@ -59,7 +59,7 @@ const upsell = (session) => {
   session.send('Woah, I bet you can\'t wait to explore those! 🔍👀');
   const msg = new builder.Message(session)
     .text('🙋 Have you got everything sorted?')
-    .suggestedActions(builder.SuggestedActions.create(session, [      
+    .suggestedActions(builder.SuggestedActions.create(session, [
       builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book that flight'),
       builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation!'),
       builder.CardAction.imBack(session, 'Send me visa information', '🛂 Check your visa info'),
