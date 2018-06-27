@@ -46,7 +46,6 @@ const promptDestination = async (session, reply, next) => {
   if (!trip.destination) {
     try {
       builder.Prompts.text(session, 'Where would you like to fly to? (anywhere is an option, by the way)'); // TODO: Add anywhere button
-      // builder.Prompts.choice(session, 'Where would you like to fly to?', ['Anywhere'], { listStyle: builder.ListStyle.button });
     } catch (err) {
       console.log(err);
     }
