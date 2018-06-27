@@ -55,19 +55,7 @@ const setUp = () => {
 
   const recognizer = new builder.LuisRecognizer(LUIS_URL);
   const intents = new builder.IntentDialog({ recognizers: [recognizer] })
-    .matches('Greeting', (session) => {
-      session.dialogData.trip = {};
-      session.send('Hey there! How can I help?');
-      const msg = new builder.Message(session)
-        .text('Some of the things you could do are:')
-        .suggestedActions(builder.SuggestedActions.create(session, [
-          builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book a flight'),
-          builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation'),
-          builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Things to do'),
-          builder.CardAction.imBack(session, 'Send me visa information', '🛂 Visa info'),
-        ]));
-      session.send(msg);
-    })
+    .matches('Greeting', [pleasantries.hello])
     .matches('Goodbye', [pleasantries.goodbye])
     .matches('Thanks', [pleasantries.thanks])
     .matches('Joke', [pleasantries.joke])
@@ -100,8 +88,7 @@ const setUp = () => {
       if (session.message.value && session.message.value.type === 'visaCountrySelect') {
         visa.processRequest(session);
       } else {
-        session.send('Sorry buddy, I did not understand \'%s\'...', session.message.text);
-        session.send('At least you don\'t have to be worried about robots taking over soon!');
+        pleasantries.misunderstanding(session);
       }
     });
 

@@ -2,6 +2,7 @@ const builder = require('botbuilder');
 
 const formatter = require('../processing/formatter');
 const skyscanner = require('../processing/skyscanner');
+const strings = require('./strings');
 
 
 const promptOrigin = (session, reply, next) => {
@@ -27,7 +28,7 @@ const promptOrigin = (session, reply, next) => {
 
   // If there's no from param, ask!
   if (!trip.origin) {
-    builder.Prompts.text(session, 'Where would you like to fly from?'); // TODO: Add send location button
+    builder.Prompts.text(session, strings.get('flights', 'originPrompt', 'eng')); // TODO: Add send location button
   } else {
     next();
   }
@@ -45,9 +46,10 @@ const promptDestination = async (session, reply, next) => {
   // If there's no from param, ask!
   if (!trip.destination) {
     try {
-      builder.Prompts.text(session, 'Where would you like to fly to? (anywhere is an option, by the way)'); // TODO: Add anywhere button
+      builder.Prompts.text(session, strings.get('flights', 'destinationPrompt', 'eng')); // TODO: Add anywhere button
     } catch (err) {
       console.log(err);
+      session.send(strings.get('error', 'error', 'eng'));
     }
   } else {
     next();
@@ -66,9 +68,10 @@ const promptFlexible = async (session, reply, next) => {
   // If there's no from param, ask!
   if (!trip.date1 && !trip.date2) {
     try {
-      builder.Prompts.choice(session, 'Flexible on dates?', ['Flexible', 'Specify Dates'], { listStyle: builder.ListStyle.button });
+      builder.Prompts.choice(session, strings.get('flights', 'flexiblePrompt', 'eng'), ['Flexible', 'Specify Dates'], { listStyle: builder.ListStyle.button });
     } catch (err) {
       console.log(err);
+      session.send(strings.get('error', 'error', 'eng'));
     }
   } else {
     next();
@@ -90,9 +93,10 @@ const promptOutbound = async (session, reply, next) => {
   // If there's no from param, ask!
   if (!trip.date1) {
     try {
-      builder.Prompts.text(session, 'What date would you like to fly out on? (anytime is an option)');
+      builder.Prompts.text(session, strings.get('flights', 'outboundPrompt', 'eng'));
     } catch (err) {
       console.log(err);
+      session.send(strings.get('error', 'error', 'eng'));
     }
   } else {
     next();
@@ -119,12 +123,13 @@ const promptReturn = async (session, reply, next) => {
   if (!trip.date2) {
     try {
       if (trip.date1 === 'anytime') {
-        builder.Prompts.choice(session, 'When are you returning?', ['anytime', 'one way'], { listStyle: builder.ListStyle.button });
+        builder.Prompts.choice(session, strings.get('flights', 'returningPrompt', 'eng'), ['anytime', 'one way'], { listStyle: builder.ListStyle.button });
       } else {
-        builder.Prompts.text(session, 'What date would you like to fly back on? (one way is a valid option)');
+        builder.Prompts.text(session, strings.get('flights', 'returningPromptNonFlexible', 'eng'));
       }
     } catch (err) {
       console.log(err);
+      session.send(strings.get('error', 'error', 'eng'));
     }
   } else {
     next();
@@ -163,7 +168,7 @@ const processRequest = async (session, reply, next) => {
       setTimeout(next, 5000);
     } catch (err) {
       console.log(err);
-      session.send('I am so sorry, I goofed up. Try again plase!');
+      session.send(strings.get('error', 'error', 'eng'));
     }
   } else {
     try {
@@ -187,22 +192,22 @@ const processRequest = async (session, reply, next) => {
         session.send(message);
         setTimeout(next, 5000);
       } else {
-        session.send('Didn\'t find any connections for those paramaters');
+        session.send(strings.get('flights', 'noResults', 'eng'));
       }
     } catch (err) {
       console.log(err);
-      session.send('Something has wrong. Please try again!');
-      session.send(err.message); // TODO: This needs to be handeled better
+      session.send(strings.get('error', 'error', 'eng'));
+      // TODO: This needs to be handeled better
     }
   }
 };
 
 const upsell = (session) => {
   if (session.dialogData.trip.destination.toLowerCase() !== 'anywhere') {
-    session.send(`Ah, you're going to ${session.dialogData.trip.destination}?! I'm so jelous 😣`);
+    session.send(strings.get('flights', 'react', 'eng'), session.dialogData.trip.destination);
   }
   const msg = new builder.Message(session)
-    .text('What`s next? 🤔')
+    .text(strings.get('upsell', 'prompt', 'eng'))
     .suggestedActions(builder.SuggestedActions.create(session, [
       builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation!'),
       builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Find things to do'),
