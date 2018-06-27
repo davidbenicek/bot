@@ -69,6 +69,7 @@ const setUp = () => {
     .matches('Book.Flight', [
       bookFlight.promptOrigin,
       bookFlight.promptDestination,
+      bookFlight.promptFlexible,
       bookFlight.promptOutbound,
       bookFlight.promptReturn,
       bookFlight.processRequest,

@@ -101,10 +101,13 @@ const twoQuotesWithReturn = [{
     },
     origin: {
       name: 'outbound_origin1',
+      code: 'code1',
     },
     destination: {
       name: 'outbound_destination1',
+      code: 'code2',
     },
+    date: '2018-11-11',
   },
   inbound: {
     carrier: {
@@ -112,10 +115,13 @@ const twoQuotesWithReturn = [{
     },
     origin: {
       name: 'inbound_origin1',
+      code: 'code1',
     },
     destination: {
       name: 'inbound_destination1',
+      code: 'code2',
     },
+    date: '2018-11-15',
   },
 }, {
   currency: {
@@ -128,10 +134,13 @@ const twoQuotesWithReturn = [{
     },
     origin: {
       name: 'outbound_origin2',
+      code: 'code2',
     },
     destination: {
       name: 'outbound_destination2',
+      code: 'code3',
     },
+    date: '2018-11-11',
   },
   inbound: {
     carrier: {
@@ -139,10 +148,13 @@ const twoQuotesWithReturn = [{
     },
     origin: {
       name: 'inbound_origin2',
+      code: 'code2',
     },
     destination: {
       name: 'inbound_destination2',
+      code: 'code3',
     },
+    date: '2018-11-15',
   },
 }];
 
@@ -154,7 +166,7 @@ expected.twoQuotesWithReturn = [{
     {
       title: 'Go to Skyscanner',
       type: 'openUrl',
-      value: 'https://www.skyscanner.net/',
+      value: 'http://skyscanner.net/transport/flights/code2/code3/181111/181115',
     },
   ],
   images: [
@@ -170,7 +182,7 @@ expected.twoQuotesWithReturn = [{
     {
       title: 'Go to Skyscanner',
       type: 'openUrl',
-      value: 'https://www.skyscanner.net/',
+      value: 'http://skyscanner.net/transport/flights/code1/code2/181111/181115',
     },
   ],
   images: [
@@ -208,10 +220,13 @@ const twoQuotesOneWay = [{
     },
     origin: {
       name: 'outbound_origin1',
+      code: 'code1',
     },
     destination: {
       name: 'outbound_destination1',
+      code: 'code2',
     },
+    date: '2018-11-11',
   },
 }, {
   currency: {
@@ -224,10 +239,13 @@ const twoQuotesOneWay = [{
     },
     origin: {
       name: 'outbound_origin2',
+      code: 'code1',
     },
     destination: {
       name: 'outbound_destination2',
+      code: 'code2',
     },
+    date: '2018-11-11',
   },
 }];
 
@@ -236,7 +254,7 @@ expected.twoQuotesOneWay = [{
     {
       title: 'Go to Skyscanner',
       type: 'openUrl',
-      value: 'https://www.skyscanner.net/',
+      value: 'http://skyscanner.net/transport/flights/code1/code2/181111/',
     },
   ],
   images: [
@@ -252,7 +270,7 @@ expected.twoQuotesOneWay = [{
     {
       title: 'Go to Skyscanner',
       type: 'openUrl',
-      value: 'https://www.skyscanner.net/',
+      value: 'http://skyscanner.net/transport/flights/code1/code2/181111/',
     },
   ],
   images: [

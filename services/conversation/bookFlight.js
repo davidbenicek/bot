@@ -54,18 +54,43 @@ const promptDestination = async (session, reply, next) => {
   }
 };
 
+const promptFlexible = async (session, reply, next) => {
+  console.log(reply);
+  session.sendTyping();
+  if (reply.response) {
+    const response = (typeof reply.response === 'string') ? reply.response : reply.response.entity;
+    session.dialogData.trip.destination = response;
+  }
+  const { trip } = session.dialogData;
+
+  // If there's no from param, ask!
+  if (!trip.date1 && !trip.date2) {
+    try {
+      builder.Prompts.choice(session, 'Flexible on dates?', ['Flexible', 'Specify Dates'], { listStyle: builder.ListStyle.button });
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    next();
+  }
+};
+
 const promptOutbound = async (session, reply, next) => {
   console.log(reply);
   session.sendTyping();
   if (reply.response) {
-    session.dialogData.trip.destination = reply.response;
+    const response = (typeof reply.response === 'string') ? reply.response : reply.response.entity;
+    if (response.toLowerCase() === 'flexible') {
+      session.dialogData.trip.date1 = 'anytime';
+      session.dialogData.trip.date2 = 'anytime';
+    }
   }
   const { trip } = session.dialogData;
 
   // If there's no from param, ask!
   if (!trip.date1) {
     try {
-      builder.Prompts.text(session, 'What date would you like to fly out on? (anytime is an option)'); // TODO: Add anytime button
+      builder.Prompts.text(session, 'What date would you like to fly out on? (anytime is an option)');
     } catch (err) {
       console.log(err);
     }
@@ -96,7 +121,7 @@ const promptReturn = async (session, reply, next) => {
       if (trip.date1 === 'anytime') {
         builder.Prompts.choice(session, 'When are you returning?', ['anytime', 'one way'], { listStyle: builder.ListStyle.button });
       } else {
-        builder.Prompts.text(session, 'What date would you like to fly back on? (one way is a valid option)'); // TODO: Add one way button
+        builder.Prompts.text(session, 'What date would you like to fly back on? (one way is a valid option)');
       }
     } catch (err) {
       console.log(err);
@@ -124,9 +149,7 @@ const processRequest = async (session, reply, next) => {
   }
 
   const { trip } = session.dialogData;
-  // If there's no from param, ask!
-  // session.send('I have failed. I am not strong enough. Please try again!');
-
+  console.log(trip);
   if (!trip.destination || trip.destination.toLowerCase() === 'anywhere') {
     try {
       const fromSkyscannerCode = await skyscanner.getLocationCode(trip.origin);
@@ -154,15 +177,18 @@ const processRequest = async (session, reply, next) => {
         date1,
         date2,
       );
+      if (flights.length !== 0) {
+        const flightsOverview = await formatter.formatQuotesIntoCards(session, flights);
 
-      const flightsOverview = await formatter.formatQuotesIntoCards(session, flights);
+        const message = new builder.Message(session)
+          .attachmentLayout(builder.AttachmentLayout.carousel)
+          .attachments(flightsOverview);
 
-      const message = new builder.Message(session)
-        .attachmentLayout(builder.AttachmentLayout.carousel)
-        .attachments(flightsOverview);
-
-      session.send(message);
-      setTimeout(next, 5000);
+        session.send(message);
+        setTimeout(next, 5000);
+      } else {
+        session.send('Didn\'t find any connections for those paramaters');
+      }
     } catch (err) {
       console.log(err);
       session.send('Something has wrong. Please try again!');
@@ -189,6 +215,7 @@ const upsell = (session) => {
 module.exports = {
   promptOrigin,
   promptDestination,
+  promptFlexible,
   promptOutbound,
   promptReturn,
   processRequest,

@@ -78,6 +78,7 @@ const formatQuotesData = async (quotes, places, carriers, currency, length) => {
   quotes = quotes.slice(quotes.length - length);
   let offers = quotes.filter(quote => (quote.Direct)).map((quote) => {
     let inbound;
+    let outbound;
     if (quote.InboundLeg) {
       inbound = {
         carrier: carriersLookUp[quote.InboundLeg.CarrierIds[0]],
@@ -86,13 +87,16 @@ const formatQuotesData = async (quotes, places, carriers, currency, length) => {
         date: quote.InboundLeg.DepartureDate,
       };
     }
-    return {
-      outbound: {
+    if (quote.OutboundLeg) {
+      outbound = {
         carrier: carriersLookUp[quote.OutboundLeg.CarrierIds[0]],
         origin: placesLookUp[quote.OutboundLeg.OriginId],
         destination: placesLookUp[quote.OutboundLeg.DestinationId],
         date: quote.OutboundLeg.DepartureDate,
-      },
+      };
+    }
+    return {
+      outbound,
       inbound,
       currency,
       price: quote.MinPrice,
