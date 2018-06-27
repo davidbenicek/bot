@@ -1,4 +1,5 @@
 const builder = require('botbuilder');
+const FuzzySearch = require('fuzzy-search');
 
 const VISA_COUNTRIES = ['Abkhaz citizens',
   'Afghan citizens',
@@ -216,42 +217,46 @@ const VISA_COUNTRIES = ['Abkhaz citizens',
   'Zimbabwean citizens'];
 
 const promptsNationality = (session) => {
-  const choices = VISA_COUNTRIES.map(choice => ({
-    title: choice,
-    value: `Visa_requirements_for_${choice.replace(' ', '_')}`,
-  }));
+  if (session.message.address.channelId !== 'emulator') {
+    builder.Prompts.text(session, 'What is your nationality?');
+  } else {
+    const choices = VISA_COUNTRIES.map(choice => ({
+      title: choice,
+      value: `${choice.replace(' ', '_')}`,
+    }));
 
-  const mesasge = {
-    contentType: 'application/vnd.microsoft.card.adaptive',
-    content: {
-      type: 'AdaptiveCard',
-      version: '1.0',
-      body: [
-        {
-          type: 'Input.ChoiceSet',
-          id: 'visaCountrySelect',
-          style: 'compact',
-          choices,
-        },
-      ],
-      actions: [
-        {
-          type: 'Action.Submit',
-          title: 'Find visa requirements',
-          data: {
-            type: 'visaCountrySelect',
+    const mesasge = {
+      contentType: 'application/vnd.microsoft.card.adaptive',
+      content: {
+        type: 'AdaptiveCard',
+        version: '1.0',
+        body: [
+          {
+            type: 'Input.ChoiceSet',
+            id: 'visaCountrySelect',
+            style: 'compact',
+            choices,
           },
-        },
-      ],
-    },
-  };
+        ],
+        actions: [
+          {
+            type: 'Action.Submit',
+            title: 'Find visa requirements',
+            data: {
+              type: 'visaCountrySelect',
+            },
+          },
+        ],
+      },
+    };
 
-  const visaMsg = new builder.Message(session).addAttachment(mesasge);
-  session.send('Please select your nationality or residence status from the dropdown bellow:');
-  session.send(visaMsg);
+    const visaMsg = new builder.Message(session).addAttachment(mesasge);
+    session.send('Please select your nationality or residence status from the dropdown bellow:');
+    session.send(visaMsg);
+  }
 };
 
-const processRequest = (session) => {
+const processRequest = (session, visa) => {
   const visaInfoCard = [new builder.HeroCard(session)
     .title('Here\'s all your visa information')
     .subtitle('Provided by WikiTravel')
@@ -260,7 +265,7 @@ const processRequest = (session) => {
       builder.CardImage.create(session, 'https://www.esquireme.com/sites/default/files/styles/full_img/public/images/2016/08/11/passports-more-e1435313737544.jpg?itok=ueeDCMri'),
     ])
     .buttons([
-      builder.CardAction.openUrl(session, `https://en.wikipedia.org/wiki/${session.message.value.visaCountrySelect}#Visa_requirements`, 'Your Visa Requirements'),
+      builder.CardAction.openUrl(session, `https://en.wikipedia.org/wiki/Visa_requirements_for_${visa || session.message.value.visaCountrySelect}#Visa_requirements`, 'Your Visa Requirements'),
     ])];
   const message = new builder.Message(session)
     .attachmentLayout(builder.AttachmentLayout.carousel)
@@ -269,7 +274,18 @@ const processRequest = (session) => {
   session.send(message);
 };
 
+const processNationality = (session, reply) => {
+  console.log(reply);
+  const searcher = new FuzzySearch(VISA_COUNTRIES, [], {
+    sort: true,
+  });
+  const result = searcher.search(reply.response);// TODO:ask which is best - not always 0th
+  session.send(`Let me just look up the visa info for ${result[0]}`);
+  processRequest(session, result[0]);
+};
+
 module.exports = {
   promptsNationality,
+  processNationality,
   processRequest,
 };
