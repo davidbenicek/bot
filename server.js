@@ -8,6 +8,8 @@ const bookFlight = require('./services/conversation/bookFlight');
 const bookAccommodation = require('./services/conversation/bookAccommodation');
 const thingsToDo = require('./services/conversation/thingsToDo');
 const visa = require('./services/conversation/visa');
+const pleasantries = require('./services/conversation/pleasantries');
+
 // const botbuilderAzure = require("botbuilder-azure");
 const server = restify.createServer();
 server.listen(process.env.PORT || 3978, () => {
@@ -66,6 +68,9 @@ const setUp = () => {
         ]));
       session.send(msg);
     })
+    .matches('Goodbye', [pleasantries.goodbye])
+    .matches('Thanks', [pleasantries.thanks])
+    .matches('Joke', [pleasantries.joke])
     .matches('Book.Flight', [
       bookFlight.promptOrigin,
       bookFlight.promptDestination,
