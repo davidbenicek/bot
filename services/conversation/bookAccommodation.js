@@ -1,6 +1,7 @@
 const builder = require('botbuilder');
 
 const yelp = require('../processing/yelp');
+const strings = require('./strings');
 
 const promptType = (session, reply, next) => {
   console.log(reply);
@@ -24,7 +25,7 @@ const promptType = (session, reply, next) => {
 
   // If there's no from param, ask!
   if (!trip.type) {
-    builder.Prompts.choice(session, 'What style of accomodation do you prefer?', ['Hotel', 'Hostel'], { listStyle: builder.ListStyle.button });
+    builder.Prompts.choice(session, strings.get('accomodation', 'stylePrompt', 'eng'), ['Hotel', 'Hostel'], { listStyle: builder.ListStyle.button });
   } else {
     next();
   }
@@ -42,9 +43,10 @@ const promptDestination = async (session, reply, next) => {
   // If there's no from param, ask!
   if (!trip.destination) {
     try {
-      builder.Prompts.text(session, 'What city are you looking to stay in?');
+      builder.Prompts.text(session, strings.get('accomodation', 'destinationPrompt', 'eng'));
     } catch (err) {
       console.log(err);
+      session.send(strings.get('error', 'error', 'eng'));
     }
   } else {
     next();
@@ -69,15 +71,15 @@ const processRequest = async (session, reply, next) => {
     setTimeout(next, 5000);
   } catch (err) {
     console.log(err);
-    session.send('Something has wrong. Please try again!');
-    session.send(err.message); // TODO: This needs to be handeled better
+    session.send(strings.get('error', 'error', 'eng'));
+    // TODO: This needs to be handeled better
   }
 };
 
 const upsell = (session) => {
-  session.send('Oooh, these places look great! 😍');
+  session.send(strings.get('accomodation', 'react', 'eng'));
   const msg = new builder.Message(session)
-    .text('What`s next? 👈😎👈')
+    .text(strings.get('upsell', 'prompt', 'eng'))
     .suggestedActions(builder.SuggestedActions.create(session, [
       builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book a flight'),
       builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Find things to do'),

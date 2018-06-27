@@ -1,6 +1,7 @@
 const builder = require('botbuilder');
 
 const unsplash = require('../processing/unsplash');
+const strings = require('./strings');
 
 const promptDestination = (session, reply, next) => {
   console.log(reply);
@@ -17,7 +18,7 @@ const promptDestination = (session, reply, next) => {
 
   // If there's no from param, ask!
   if (!session.dialogData.trip.destination || session.dialogData.trip.destination === 'anywhere') {
-    builder.Prompts.text(session, 'Which city are you interested in?'); // TODO: Add send location button
+    builder.Prompts.text(session, strings.get('thingsToDo', 'destinationPrompt', 'eng')); // TODO: Add send location button
   } else {
     next();
   }
@@ -51,14 +52,14 @@ const processRequest = async (session, reply, next) => {
     setTimeout(next, 5000);
   } catch (err) {
     console.log(err);
-    session.send('I have failed. I am not strong enough. Please try again!');
+    strings.get('error', 'error', 'eng');
   }
 };
 
 const upsell = (session) => {
-  session.send('Woah, I bet you can\'t wait to explore those! 🔍👀');
+  session.send(strings.get('thingsToDo', 'react', 'eng'));
   const msg = new builder.Message(session)
-    .text('🙋 Have you got everything sorted?')
+    .text(strings.get('upsell', 'prompt', 'eng'))
     .suggestedActions(builder.SuggestedActions.create(session, [
       builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book that flight'),
       builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation!'),
