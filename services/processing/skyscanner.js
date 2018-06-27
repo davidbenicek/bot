@@ -78,6 +78,7 @@ const formatQuotesData = async (quotes, places, carriers, currency, length) => {
   quotes = quotes.slice(quotes.length - length);
   let offers = quotes.filter(quote => (quote.Direct)).map((quote) => {
     let inbound;
+    let outbound;
     if (quote.InboundLeg) {
       inbound = {
         carrier: carriersLookUp[quote.InboundLeg.CarrierIds[0]],
@@ -86,13 +87,16 @@ const formatQuotesData = async (quotes, places, carriers, currency, length) => {
         date: quote.InboundLeg.DepartureDate,
       };
     }
-    return {
-      outbound: {
+    if (quote.OutboundLeg) {
+      outbound = {
         carrier: carriersLookUp[quote.OutboundLeg.CarrierIds[0]],
         origin: placesLookUp[quote.OutboundLeg.OriginId],
         destination: placesLookUp[quote.OutboundLeg.DestinationId],
         date: quote.OutboundLeg.DepartureDate,
-      },
+      };
+    }
+    return {
+      outbound,
       inbound,
       currency,
       price: quote.MinPrice,
@@ -122,7 +126,9 @@ const browseRoutes = async (
   if (!locale) locale = 'en-UK';
 
   const res = await module.exports.callAPI(`browseroutes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
+  console.log('here2');
   const options = await formatRoutesData(res.Routes, res.Places, res.Currencies[0]);
+  console.log('here1');
   return options;
 };
 
@@ -134,6 +140,13 @@ const browseQuotes = async (
   country,
   currency,
   locale) => {
+    console.log(originAirport,
+      destinationAirport,
+      outboundDate,
+      returnDate,
+      country,
+      currency,
+      locale);
   if (!originAirport) throw new Error('Origin aiport undefined. Required in browseQuotes');
   if (!destinationAirport) destinationAirport = 'anywhere';
   if (!outboundDate) outboundDate = 'anytime';
@@ -143,7 +156,9 @@ const browseQuotes = async (
   if (!locale) locale = 'en-UK';
 
   const res = await module.exports.callAPI(`browsequotes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
+  console.log(res,'res');
   const options = await formatQuotesData(res.Quotes, res.Places, res.Carriers, res.Currencies[0]);
+  console.log(options,'res2');
   return options;
 };
 
