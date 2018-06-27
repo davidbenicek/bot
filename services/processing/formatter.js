@@ -53,7 +53,6 @@ const formatQuotesIntoCards = (session, flights) => new Promise(async (resolve) 
     const image = await unsplash.getImage(session.dialogData.trip.destination);
     const outboundDate = (!flight.outbound || !flight.outbound.date) ? '' : moment(flight.outbound.date).format('YYMMDD');
     const inboundDate = (!flight.inbound || !flight.inbound.date) ? '' : moment(flight.inbound.date).format('YYMMDD');
-    console.log(`http://skyscanner.net/transport/flights/${flight.outbound.origin.code}/${flight.outbound.destination.code}/${outboundDate}/${outboundDate}`);
     flightsOverview.push(new builder.HeroCard(session)
       .title(`To ${session.dialogData.trip.destination} for ${flight.currency.Symbol}${flight.price}`)
       .subtitle(`Flying out with ${flight.outbound.carrier.name} ${(flight.inbound) ? `and back with ${flight.inbound.carrier.name}` : ''}`)

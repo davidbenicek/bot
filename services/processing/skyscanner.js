@@ -126,9 +126,7 @@ const browseRoutes = async (
   if (!locale) locale = 'en-UK';
 
   const res = await module.exports.callAPI(`browseroutes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
-  console.log('here2');
   const options = await formatRoutesData(res.Routes, res.Places, res.Currencies[0]);
-  console.log('here1');
   return options;
 };
 
@@ -140,13 +138,6 @@ const browseQuotes = async (
   country,
   currency,
   locale) => {
-    console.log(originAirport,
-      destinationAirport,
-      outboundDate,
-      returnDate,
-      country,
-      currency,
-      locale);
   if (!originAirport) throw new Error('Origin aiport undefined. Required in browseQuotes');
   if (!destinationAirport) destinationAirport = 'anywhere';
   if (!outboundDate) outboundDate = 'anytime';
@@ -156,9 +147,7 @@ const browseQuotes = async (
   if (!locale) locale = 'en-UK';
 
   const res = await module.exports.callAPI(`browsequotes/v1.0/${country}/${currency}/${locale}/${originAirport}/${destinationAirport}/${outboundDate}/${returnDate}`);
-  console.log(res,'res');
   const options = await formatQuotesData(res.Quotes, res.Places, res.Carriers, res.Currencies[0]);
-  console.log(options,'res2');
   return options;
 };
 
