@@ -261,7 +261,7 @@ const upsell = (session) => {
   const msg = new builder.Message(session)
     .text('What`s next? 👈😎👈')
     .suggestedActions(builder.SuggestedActions.create(session, [      
-      builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book that flight'),
+      builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book flight'),
       builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation!'),
       builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Find things to do'),
     ]));
@@ -284,7 +284,7 @@ const processRequest = (session, visa) => {
     .attachments(visaInfoCard);
 
   session.send(message);
-  setTimeout(upsell, 5000);
+  setTimeout(() => { upsell(session); }, 5000);
 };
 
 const processNationality = (session, reply) => {

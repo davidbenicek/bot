@@ -173,10 +173,10 @@ const processRequest = async (session, reply, next) => {
 
 const upsell = (session) => {
   if (session.dialogData.trip.destination.toLowerCase() !== 'anywhere') {
-    session.send(`Ah, you're going to ${session.dialogData.trip.destination}?! I'm so jelous 😣😣😣`);
+    session.send(`Ah, you're going to ${session.dialogData.trip.destination}?! I'm so jelous 😣`);
   }
   const msg = new builder.Message(session)
-    .text('What`s next? 🤔🤔🤔')
+    .text('What`s next? 🤔')
     .suggestedActions(builder.SuggestedActions.create(session, [
       builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation!'),
       builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Find things to do'),
