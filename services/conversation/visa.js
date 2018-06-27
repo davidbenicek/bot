@@ -256,6 +256,18 @@ const promptsNationality = (session) => {
   }
 };
 
+const upsell = (session) => {
+  session.send('Visas can be very annoying...');
+  const msg = new builder.Message(session)
+    .text('What`s next? 👈😎👈')
+    .suggestedActions(builder.SuggestedActions.create(session, [
+      builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book flight'),
+      builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation!'),
+      builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Find things to do'),
+    ]));
+  session.send(msg);
+};
+
 const processRequest = (session, visa) => {
   const visaInfoCard = [new builder.HeroCard(session)
     .title('Here\'s all your visa information')
@@ -272,6 +284,7 @@ const processRequest = (session, visa) => {
     .attachments(visaInfoCard);
 
   session.send(message);
+  setTimeout(() => { upsell(session); }, 5000);
 };
 
 const processNationality = (session, reply) => {

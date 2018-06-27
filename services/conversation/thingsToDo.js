@@ -23,7 +23,7 @@ const promptDestination = (session, reply, next) => {
   }
 };
 
-const processRequest = async (session, reply) => {
+const processRequest = async (session, reply, next) => {
   console.log(reply);
   session.sendTyping();
   if (reply.response) {
@@ -48,15 +48,28 @@ const processRequest = async (session, reply) => {
       .attachmentLayout(builder.AttachmentLayout.list)
       .attachments(card);
     session.send(message);
+    setTimeout(next, 5000);
   } catch (err) {
     console.log(err);
     session.send('I have failed. I am not strong enough. Please try again!');
   }
 };
 
+const upsell = (session) => {
+  session.send('Woah, I bet you can\'t wait to explore those! 🔍👀');
+  const msg = new builder.Message(session)
+    .text('🙋 Have you got everything sorted?')
+    .suggestedActions(builder.SuggestedActions.create(session, [
+      builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book that flight'),
+      builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation!'),
+      builder.CardAction.imBack(session, 'Send me visa information', '🛂 Check your visa info'),
+    ]));
+  session.send(msg);
+};
 
 module.exports = {
   promptDestination,
   processRequest,
+  upsell,
 };
 

@@ -54,6 +54,7 @@ const setUp = () => {
   const recognizer = new builder.LuisRecognizer(LUIS_URL);
   const intents = new builder.IntentDialog({ recognizers: [recognizer] })
     .matches('Greeting', (session) => {
+      session.dialogData.trip = {};
       session.send('Hey there! How can I help?');
       const msg = new builder.Message(session)
         .text('Some of the things you could do are:')
@@ -71,19 +72,23 @@ const setUp = () => {
       bookFlight.promptOutbound,
       bookFlight.promptReturn,
       bookFlight.processRequest,
+      bookFlight.upsell,
     ])
     .matches('Book.Accommodation', [
       bookAccommodation.promptType,
       bookAccommodation.promptDestination,
       bookAccommodation.processRequest,
+      bookAccommodation.upsell,
     ])
     .matches('Info.Location', [
       thingsToDo.promptDestination,
       thingsToDo.processRequest,
+      thingsToDo.upsell,
     ])
     .matches('Info.Visa', [
       visa.promptsNationality,
       visa.processNationality,
+      visa.upsell,
     ])
     .onDefault((session) => {
       if (session.message.value && session.message.value.type === 'visaCountrySelect') {

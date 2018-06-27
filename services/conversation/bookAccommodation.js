@@ -51,7 +51,7 @@ const promptDestination = async (session, reply, next) => {
   }
 };
 
-const processRequest = async (session, reply) => {
+const processRequest = async (session, reply, next) => {
   session.sendTyping();
   if (reply.response) {
     session.dialogData.trip.destination = reply.response;
@@ -66,6 +66,7 @@ const processRequest = async (session, reply) => {
       .attachments(cards);
 
     session.send(hotels);
+    setTimeout(next, 5000);
   } catch (err) {
     console.log(err);
     session.send('Something has wrong. Please try again!');
@@ -73,10 +74,22 @@ const processRequest = async (session, reply) => {
   }
 };
 
+const upsell = (session) => {
+  session.send('Oooh, these places look great! 😍');
+  const msg = new builder.Message(session)
+    .text('What`s next? 👈😎👈')
+    .suggestedActions(builder.SuggestedActions.create(session, [
+      builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book a flight'),
+      builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Find things to do'),
+      builder.CardAction.imBack(session, 'Send me visa information', '🛂 Check your visa info'),
+    ]));
+  session.send(msg);
+};
 
 module.exports = {
   promptType,
   promptDestination,
   processRequest,
+  upsell,
 };
 
