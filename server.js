@@ -5,6 +5,7 @@ require('dotenv').load();
 const secretsManager = require('./services/processing/secretsManager');
 
 const bookFlight = require('./services/conversation/bookFlight');
+const bookAccommodation = require('./services/conversation/bookAccommodation');
 const thingsToDo = require('./services/conversation/thingsToDo');
 const visa = require('./services/conversation/visa');
 // const botbuilderAzure = require("botbuilder-azure");
@@ -60,6 +61,7 @@ const setUp = () => {
           builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book a flight'),
           builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Things to do'),
           builder.CardAction.imBack(session, 'Send me visa information', '🛂 Visa info'),
+          builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation'),
         ]));
       session.send(msg);
     })
@@ -69,6 +71,11 @@ const setUp = () => {
       bookFlight.promptOutbound,
       bookFlight.promptReturn,
       bookFlight.processRequest,
+    ])
+    .matches('Book.Accommodation', [
+      bookAccommodation.promptType,
+      bookAccommodation.promptDestination,
+      bookAccommodation.processRequest,
     ])
     .matches('Info.Location', [
       thingsToDo.promptDestination,
