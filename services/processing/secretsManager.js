@@ -53,7 +53,7 @@ const loadSecrets = async () => {
   const UNSPLASH_TOKEN = (await getSecret(client, KEY_VAULT_BASE_URL, 'UNSPLASH-TOKEN', KEY_VAULT_UNSPLASH_TOKEN_KEY_ID)).value;
   const MICROSOFT_APP_ID = (await getSecret(client, KEY_VAULT_BASE_URL, 'MICROSOFT-APP-ID', KEY_VAULT_MICROSOFT_APP_ID_KEY_ID)).value;
   const MICROSOFT_APP_PASSWORD = (await getSecret(client, KEY_VAULT_BASE_URL, 'MICROSOFT-APP-PASSWORD', KEY_VAULT_MICROSOFT_APP_PASSWORD_KEY_ID)).value;
-  const YELP_TOKEN = (await getSecret(client, KEY_VAULT_BASE_URL, 'YELP_TOKEN', KEY_VAULT_YELP_TOKEN_KEY_ID)).value;
+  const YELP_TOKEN = (await getSecret(client, KEY_VAULT_BASE_URL, 'YELP-TOKEN', KEY_VAULT_YELP_TOKEN_KEY_ID)).value;
   return {
     LUIS_APP_ID,
     LUIS_APP_KEY,
