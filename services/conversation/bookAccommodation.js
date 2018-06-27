@@ -8,15 +8,19 @@ const promptType = (session, reply, next) => {
   // Try get all the data from the initial user query
   const type = builder.EntityRecognizer.findEntity(reply.entities, 'accommodationType');
   const destination = builder.EntityRecognizer.findEntity(reply.entities, 'place::destination');
-
-
-  // Save to dialog data
-  const trip = {
-    type: type ? type.entity : undefined,
-    destination: destination ? destination.entity : undefined,
-  };
-  session.dialogData.trip = trip;
-
+  if (destination) {
+    session.dialogData.trip = {
+      type: type ? type.entity : undefined,
+      destination: destination.entity,
+    };
+  } else if (session.dialogData.trip) {
+    session.dialogData.trip.type = type ? type.entity : undefined;
+  } else {
+    session.dialogData.trip = {
+      type: type ? type.entity : undefined,
+    };
+  }
+  const { trip } = session.dialogData;
 
   // If there's no from param, ask!
   if (!trip.type) {

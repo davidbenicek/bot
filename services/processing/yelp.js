@@ -19,7 +19,7 @@ const callAPI = (category, location) => {
   return request(options);
 };
 
-const formatYelpToCards = (session, results) => new Promise((resolve, reject) => {
+const formatYelpToCards = (session, results) => new Promise((resolve) => {
   const cards = [];
   const promises = results.map(async (yelp) => {
     cards.push(new builder.HeroCard(session)
