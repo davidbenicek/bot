@@ -59,8 +59,7 @@ const setUp = () => {
         .suggestedActions(builder.SuggestedActions.create(session, [
           builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book a flight'),
           builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Things to do'),
-          // builder.CardAction.imBack(session, 'Send me visa information', '🛂Visa info'),
-          // ^^Disabled due to compatability issues
+          builder.CardAction.imBack(session, 'Send me visa information', '🛂 Visa info'),
         ]));
       session.send(msg);
     })
@@ -77,6 +76,7 @@ const setUp = () => {
     ])
     .matches('Info.Visa', [
       visa.promptsNationality,
+      visa.processNationality,
     ])
     .onDefault((session) => {
       if (session.message.value && session.message.value.type === 'visaCountrySelect') {
