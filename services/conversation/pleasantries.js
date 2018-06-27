@@ -18,10 +18,9 @@ const hello = (session) => {
 };
 
 const misunderstanding = (session) => {
-  session.send(strings.get('pleasantries','misunderstanding','eng'), session.message.text);
-  session.send(strings.get('pleasantries','improvement','eng'));
-
-}
+  session.send(strings.get('pleasantries', 'misunderstanding', 'eng'), session.message.text);
+  session.send(strings.get('pleasantries', 'improvement', 'eng'));
+};
 
 const goodbye = (session) => {
   session.send(strings.get('pleasantries', 'goodbye', 'eng'));
