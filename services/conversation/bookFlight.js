@@ -94,7 +94,7 @@ const promptReturn = async (session, reply, next) => {
   if (!trip.date2) {
     try {
       if (trip.date1 === 'anytime') {
-        builder.Prompts.choice(session, 'When are you returning?', ['anytime', 'one way'], { listStyle: builder.ListStyle.button }); // TODO: Add one way button
+        builder.Prompts.choice(session, 'When are you returning?', ['anytime', 'one way'], { listStyle: builder.ListStyle.button });
       } else {
         builder.Prompts.text(session, 'What date would you like to fly back on? (one way is a valid option)'); // TODO: Add one way button
       }
