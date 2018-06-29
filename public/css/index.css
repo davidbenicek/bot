@@ -1,3 +1,50 @@
+body {
+  background: #faefe6
+}
+
+p, h1 {
+  font-family: 'Roboto', sans-serif;
+}
+
+button {
+  font-size: 1.5em;
+}
+
+#dropdowns {
+  width: 50%;
+  margin:auto;
+}
+@media (max-width: 600px) {
+  #skype {
+    width: 100% !important;
+  }
+  #dropdowns {
+    width: 100%;
+  }
+  button {
+    font-size: 1em;
+  }
+  h1 {
+    font-size: 1em;
+  }
+  p {
+    font-size: 0.8em;
+  }
+}
+#logo {
+  max-width: 200px;
+  margin: auto;
+  display: block;
+  padding-bottom: 10px;
+}
+
+#skype {
+  width: 50%;
+  margin: auto;
+  text-align: right;
+  padding-bottom: 10px;
+}
+
 /* Taken from https://www.w3schools.com/howto/howto_js_accordion.asp */
 .accordion {
     background-color: #eee;
@@ -35,27 +82,4 @@
 
 .active:after {
   content: "\2796"; /* Unicode character for "minus" sign (-) */
-}
-
-#dropdowns {
-  width: 50%;
-  margin:auto;
-}
-#logo {
-  max-width: 200px;
-  margin: auto;
-  display: block;
-  padding-bottom: 50px;
-}
-
-body {
-  background: #faefe6
-}
-
-p, h1 {
-  font-family: 'Roboto', sans-serif;
-}
-
-button {
-  font-size: 1.5em;
 }
