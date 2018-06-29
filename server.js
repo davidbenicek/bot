@@ -16,10 +16,26 @@ server.listen(process.env.PORT || 3978, () => {
   console.log(`Listening on port ${process.env.PORT || 3978}`);
 });
 
-server.get('/', (req, res, cb) => {
-  res.send('Something, something Turing test...');
-  return cb();
-});
+
+server.get('/', restify.plugins.serveStatic({
+  directory: './public',
+  default: 'index.html',
+}));
+
+server.get('/css/', restify.plugins.serveStatic({
+  directory: './public',
+  default: 'index.css',
+}));
+
+server.get('/media/', restify.plugins.serveStatic({
+  directory: './public',
+  default: 'logo_narrow.png',
+}));
+
+server.get('/js/', restify.plugins.serveStatic({
+  directory: './public',
+  default: 'index.js',
+}));
 
 const setUp = () => {
   const connector = new builder.ChatConnector({
