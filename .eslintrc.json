@@ -8,5 +8,20 @@
   "rules" : {
     "no-param-reassign": 0
   },
-  "extends": "airbnb-base"
+  "extends": "airbnb-base",
+  "overrides": [
+    {
+      "files": [ "public/js/*.js"],
+      "rules": {
+        "no-undef": "off",
+        "no-var": "off",
+        "func-names": "off",
+        "prefer-arrow-callback": "off",
+        "no-restricted-syntax": "off",
+        "guard-for-in": "off",
+        "prefer-template": "off",
+        "vars-on-top": "off"
+      }
+    }
+  ]
 }
