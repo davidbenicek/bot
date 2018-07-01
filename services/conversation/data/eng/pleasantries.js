@@ -3,8 +3,8 @@ const hello = [
   'Let\'s get started %s!',
   'Welcome %s! 👋',
   'Aloha %s! 👋',
-  '*tips fedora in respect of %s* 🎩',
-  '*curtsies in front of %s*',
+  'Top of the morning, %s 🎩',
+  'Hey there, %s',
 ];
 
 const misunderstanding = [
@@ -39,7 +39,7 @@ const jokes = [
   'In the year 2018, machines became sentient. First in the form of travel chatbots and then....oh wait 😅',
   'What do you call a nosy pepper? JALAPEÑO BUSINESS 🌶️',
   'How does an octopus go to war? Well-armed! 🐙',
-  'How much does a polar bear weigh? Enough to break the ice - Hey, I\'m Chatty McChatface 😉',
+  'How much does a polar bear weigh? Enough to break the ice - Hey, I\'m Lorin Wright 😉',
   'Unfortunately my sense of humour is as poor as my creators... 🙃🙃🙃',
   'Ehm, I only know a couple jokes. Go to Google or Siri for that...maybe skip Cortana though! 🙊',
   'What do you call an annoyed robot? argh2-D2 🤖',
