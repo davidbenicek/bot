@@ -76,7 +76,7 @@ const formatQuotesData = async (quotes, places, carriers, currency, length) => {
 
   if (!length) length = 9;
   quotes = quotes.slice(quotes.length - length);
-  let offers = quotes.filter(quote => (quote.Direct)).map((quote) => {
+  let offers = quotes.map((quote) => {
     let inbound;
     let outbound;
     if (quote.InboundLeg) {
@@ -99,6 +99,7 @@ const formatQuotesData = async (quotes, places, carriers, currency, length) => {
       outbound,
       inbound,
       currency,
+      direct: quote.Direct,
       price: quote.MinPrice,
       quoteDate: quote.QuoteDateTime,
     };

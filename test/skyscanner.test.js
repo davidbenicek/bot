@@ -70,7 +70,7 @@ describe('Skyscanner', () => {
         data.carriers,
         data.currency,
       );
-      assert.equal(res.length, 2); // Ignores non-direct
+      assert.equal(res.length, 3);
       assert.deepEqual(res, data.expected.formatQuotesData);
     });
     it('should return only 1 element when length is set', async () => {
@@ -82,7 +82,7 @@ describe('Skyscanner', () => {
         1,
       );
       assert.equal(res.length, 1); // Bounded by passed in length
-      assert.deepEqual(res, [data.expected.formatQuotesData[1]]);
+      assert.deepEqual(res, [data.expected.formatQuotesData[2]]);
     });
   });
   describe('.getLocationCode', () => {

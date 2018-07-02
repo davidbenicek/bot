@@ -25,6 +25,7 @@ const luisTomorrow = { timex: 'XXXX-WXX-3', type: 'date', value: dateTomorrow };
 /* Testing formatRoutesIntoCards */
 
 const twoRoutes = [{
+  direct: true,
   destination: {
     name: 'Prague',
     code: 'destination_code1',
@@ -38,6 +39,7 @@ const twoRoutes = [{
   },
   price: 100,
 }, {
+  direct: true,
   destination: {
     name: 'Berlin',
     code: 'destination_code2',
@@ -55,7 +57,7 @@ const twoRoutes = [{
 expected.twoRoutes = [{
   title: 'Berlin',
   subtitle: 'How do you fancy a trip to  Berlin?',
-  text: 'Fly from Rome to Berlin for £99!',
+  text: 'Fly from Rome to Berlin starting at £99!',
   images: [{ url: 'some image' }],
   buttons: [{
     type: 'openUrl',
@@ -65,7 +67,7 @@ expected.twoRoutes = [{
 }, {
   title: 'Prague',
   subtitle: 'How do you fancy a trip to  Prague?',
-  text: 'Fly from London to Prague for £100!',
+  text: 'Fly from London to Prague starting at £100!',
   images: [{ url: 'some image' }],
   buttons:
  [{
@@ -123,6 +125,7 @@ const twoQuotesWithReturn = [{
     },
     date: '2018-11-15',
   },
+  direct: true,
 }, {
   currency: {
     Symbol: '£',
@@ -159,8 +162,8 @@ const twoQuotesWithReturn = [{
 }];
 
 expected.twoQuotesWithReturn = [{
-  title: 'To somewhere for £99',
-  subtitle: 'Flying out with carrier_out2 and back with carrier_in2',
+  title: 'To somewhere starting at £99 (INDIRECT)',
+  subtitle: 'Flying out with carrier_out2 and back with carrier_in2  with a layover',
   text: 'Fly from outbound_origin2 to outbound_destination2 and back from inbound_origin2 to  inbound_destination2',
   buttons: [
     {
@@ -175,8 +178,8 @@ expected.twoQuotesWithReturn = [{
     },
   ],
 }, {
-  title: 'To somewhere for £100',
-  subtitle: 'Flying out with carrier_out1 and back with carrier_in1',
+  title: 'To somewhere starting at £100 ',
+  subtitle: 'Flying out with carrier_out1 and back with carrier_in1 ',
   text: 'Fly from outbound_origin1 to outbound_destination1 and back from inbound_origin1 to  inbound_destination1',
   buttons: [
     {
@@ -228,6 +231,7 @@ const twoQuotesOneWay = [{
     },
     date: '2018-11-11',
   },
+  direct: true,
 }, {
   currency: {
     Symbol: '£',
@@ -262,9 +266,9 @@ expected.twoQuotesOneWay = [{
       url: 'some image',
     },
   ],
-  subtitle: 'Flying out with carrier_out2 ',
+  subtitle: 'Flying out with carrier_out2   with a layover',
   text: 'Fly from outbound_origin2 to outbound_destination2 ',
-  title: 'To somewhere for £99',
+  title: 'To somewhere starting at £99 (INDIRECT)',
 }, {
   buttons: [
     {
@@ -278,9 +282,9 @@ expected.twoQuotesOneWay = [{
       url: 'some image',
     },
   ],
-  subtitle: 'Flying out with carrier_out1 ',
+  subtitle: 'Flying out with carrier_out1  ',
   text: 'Fly from outbound_origin1 to outbound_destination1 ',
-  title: 'To somewhere for £100',
+  title: 'To somewhere starting at £100 ',
 }, {
   buttons: [
     {
