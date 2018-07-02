@@ -129,9 +129,7 @@ const setUp = () => {
   bot.on('contactRelationUpdate', (action) => {
     console.log(action);
     if (action.action === 'add') {
-      bot.send(new builder.Message()
-        .address(action.address)
-        .text('Added me'));
+      pleasantries.welcome(bot, action.address);
     }
   });
 };
