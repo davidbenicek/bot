@@ -109,6 +109,16 @@ const setUp = () => {
     });
 
   bot.dialog('/', intents);
+
+  bot.on('conversationUpdate', (action) => {
+    if (action.membersAdded) {
+      action.membersAdded.forEach((identity) => {
+        if (identity.id === action.address.bot.id) {
+          pleasantries.welcome(bot, action.address);
+        }
+      });
+    }
+  });
 };
 
 if (process.env.BotEnv !== 'prod') {
