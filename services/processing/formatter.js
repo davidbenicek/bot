@@ -21,7 +21,7 @@ const formatRoutesIntoCards = async (session, flights) => new Promise(async (res
     flightsOverview.push(new builder.HeroCard(session)
       .title(flight.destination.name)
       .subtitle(`How do you fancy a trip to  ${flight.destination.name}?`)
-      .text(`Fly from ${flight.origin.name} to ${flight.destination.name} for ${flight.currency.Symbol}${flight.price}!`)
+      .text(`Fly from ${flight.origin.name} to ${flight.destination.name} starting at ${flight.currency.Symbol}${flight.price}!`)
       .images([
         builder.CardImage.create(session, image),
       ])
@@ -54,8 +54,8 @@ const formatQuotesIntoCards = (session, flights) => new Promise(async (resolve) 
     const outboundDate = (!flight.outbound || !flight.outbound.date) ? '' : moment(flight.outbound.date).format('YYMMDD');
     const inboundDate = (!flight.inbound || !flight.inbound.date) ? '' : moment(flight.inbound.date).format('YYMMDD');
     flightsOverview.push(new builder.HeroCard(session)
-      .title(`To ${session.dialogData.trip.destination} for ${flight.currency.Symbol}${flight.price}`)
-      .subtitle(`Flying out with ${flight.outbound.carrier.name} ${(flight.inbound) ? `and back with ${flight.inbound.carrier.name}` : ''}`)
+      .title(`To ${session.dialogData.trip.destination} starting at ${flight.currency.Symbol}${flight.price} ${(flight.direct ? '' : '(INDIRECT)')}`)
+      .subtitle(`Flying out with ${flight.outbound.carrier.name} ${(flight.inbound) ? `and back with ${flight.inbound.carrier.name}` : ''} ${(flight.direct ? '' : ' with a layover')}`)
       .text(`Fly from ${flight.outbound.origin.name} to ${flight.outbound.destination.name} ${(flight.inbound) ? `and back from ${flight.inbound.origin.name} to  ${flight.inbound.destination.name}` : ''}`)
       .images([
         builder.CardImage.create(session, image),

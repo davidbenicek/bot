@@ -75,6 +75,20 @@ const quotes = [{
   QuoteDateTime: '2018-01-01',
 }, {
   Direct: false,
+  InboundLeg: {
+    CarrierIds: ['3'],
+    OriginId: '3',
+    DestinationId: '1',
+    DepartureDate: '2018-10-09',
+  },
+  OutboundLeg: {
+    CarrierIds: ['4'],
+    OriginId: '1',
+    DestinationId: '3',
+    DepartureDate: '2018-09-09',
+  },
+  MinPrice: '99',
+  QuoteDateTime: '2018-01-01',
 }, {
   Direct: true,
   InboundLeg: {
@@ -102,16 +116,59 @@ expected.formatQuotesData = [{
     date: '2018-09-09',
   },
   inbound:
- {
-   carrier: { name: 'carrier1' },
-   origin: { name: 'place1', type: 'type1', code: 'code1' },
-   destination: { name: 'place2', type: 'type2', code: 'code2' },
-   date: '2018-10-09',
- },
+  {
+    carrier: { name: 'carrier1' },
+    origin: { name: 'place1', type: 'type1', code: 'code1' },
+    destination: { name: 'place2', type: 'type2', code: 'code2' },
+    date: '2018-10-09',
+  },
+  direct: true,
   currency: { Symbol: '£' },
   price: '100',
   quoteDate: '2018-01-01',
-}, {
+},
+{
+  currency: {
+    Symbol: '£',
+  },
+  direct: false,
+  inbound: {
+    carrier: {
+      name: 'carrier3',
+    },
+    date: '2018-10-09',
+    destination: {
+      code: 'code1',
+      name: 'place1',
+      type: 'type1',
+    },
+    origin: {
+      code: 'code3',
+      name: 'place3',
+      type: 'type3',
+    },
+  },
+  outbound: {
+    carrier: {
+      name: 'carrier4',
+    },
+    date: '2018-09-09',
+    destination: {
+      code: 'code3',
+      name: 'place3',
+      type: 'type3',
+    },
+    origin: {
+      code: 'code1',
+      name: 'place1',
+      type: 'type1',
+    },
+  },
+  price: '99',
+  quoteDate: '2018-01-01',
+},
+{
+  direct: true,
   outbound:
   {
     carrier: { name: 'carrier4' },
@@ -120,12 +177,12 @@ expected.formatQuotesData = [{
     date: '2018-09-09',
   },
   inbound:
- {
-   carrier: { name: 'carrier3' },
-   origin: { name: 'place3', type: 'type3', code: 'code3' },
-   destination: { name: 'place1', type: 'type1', code: 'code1' },
-   date: '2018-10-09',
- },
+  {
+    carrier: { name: 'carrier3' },
+    origin: { name: 'place3', type: 'type3', code: 'code3' },
+    destination: { name: 'place1', type: 'type1', code: 'code1' },
+    date: '2018-10-09',
+  },
   currency: { Symbol: '£' },
   price: '99',
   quoteDate: '2018-01-01',
