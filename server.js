@@ -111,12 +111,18 @@ const setUp = () => {
   bot.dialog('/', intents);
 
   bot.on('conversationUpdate', (action) => {
+    console.log(action);
     if (action.membersAdded) {
       action.membersAdded.forEach((identity) => {
-        if (identity.id === action.address.bot.id) {
+        if (identity.id !== action.address.bot.id) {
           pleasantries.welcome(bot, action.address);
         }
       });
+    } else {
+      var reply = new builder.Message()
+                        .address(action.address)
+                        .text("Goodbye");
+                bot.send(reply);
     }
   });
 };
