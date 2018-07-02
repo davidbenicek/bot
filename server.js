@@ -110,26 +110,19 @@ const setUp = () => {
 
   bot.dialog('/', intents);
 
-  bot.on('conversationUpdate', (action) => {
-    // console.log(action);
-    if (action.membersAdded) {
-      action.membersAdded.forEach((identity) => {
-        if (identity.id !== action.address.bot.id) {
-          pleasantries.welcome(bot, action.address);
+  bot.on('conversationUpdate', (message) => {
+    if (message.membersAdded) {
+      message.membersAdded.forEach((identity) => {
+        if (identity.id !== message.address.bot.id) {
+          pleasantries.welcome(bot, message.address);
         }
       });
-    } else {
-      const reply = new builder.Message()
-        .address(action.address)
-        .text('Goodbye');
-      bot.send(reply);
     }
   });
 
-  bot.on('contactRelationUpdate', (action) => {
-    console.log(action);
-    if (action.action === 'add') {
-      pleasantries.welcome(bot, action.address);
+  bot.on('contactRelationUpdate', (message) => {
+    if (message.message === 'add') {
+      pleasantries.welcome(bot, message.address);
     }
   });
 };
