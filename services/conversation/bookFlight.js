@@ -3,9 +3,10 @@ const builder = require('botbuilder');
 const formatter = require('../processing/formatter');
 const skyscanner = require('../processing/skyscanner');
 const strings = require('./strings');
-
+const LATEST = require('./data/latest');
 
 const promptOrigin = (session, reply, next) => {
+  console.log(session);
   console.log(reply);
   session.sendTyping();
   // Try get all the data from the initial user query
@@ -203,6 +204,11 @@ const processRequest = async (session, reply, next) => {
 };
 
 const upsell = (session) => {
+  // Save completed session info for follow up
+  LATEST.destination = session.dialogData.trip.destination;
+  LATEST.address = session.message.address;
+  LATEST.prompt = strings.get('flights', 'followUp', 'eng');
+
   if (session.dialogData.trip.destination.toLowerCase() !== 'anywhere') {
     session.send(strings.get('flights', 'react', 'eng'), session.dialogData.trip.destination);
   }

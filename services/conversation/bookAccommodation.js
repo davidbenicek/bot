@@ -2,6 +2,7 @@ const builder = require('botbuilder');
 
 const yelp = require('../processing/yelp');
 const strings = require('./strings');
+const LATEST = require('./data/latest');
 
 const promptType = (session, reply, next) => {
   console.log(reply);
@@ -25,7 +26,7 @@ const promptType = (session, reply, next) => {
 
   // If there's no from param, ask!
   if (!trip.type) {
-    builder.Prompts.choice(session, strings.get('accomodation', 'stylePrompt', 'eng'), ['Hotel', 'Hostel'], { listStyle: builder.ListStyle.button });
+    builder.Prompts.choice(session, strings.get('accommodation', 'stylePrompt', 'eng'), ['Hotel', 'Hostel'], { listStyle: builder.ListStyle.button });
   } else {
     next();
   }
@@ -43,7 +44,7 @@ const promptDestination = async (session, reply, next) => {
   // If there's no from param, ask!
   if (!trip.destination) {
     try {
-      builder.Prompts.text(session, strings.get('accomodation', 'destinationPrompt', 'eng'));
+      builder.Prompts.text(session, strings.get('accommodation', 'destinationPrompt', 'eng'));
     } catch (err) {
       console.log(err);
       session.send(strings.get('error', 'error', 'eng'));
@@ -77,7 +78,12 @@ const processRequest = async (session, reply, next) => {
 };
 
 const upsell = (session) => {
-  session.send(strings.get('accomodation', 'react', 'eng'));
+  // Save completed session info for follow up
+  LATEST.destination = session.dialogData.trip.destination;
+  LATEST.address = session.message.address;
+  LATEST.prompt = strings.get('accommodation', 'followUp', 'eng');
+
+  session.send(strings.get('accommodation', 'react', 'eng'));
   const msg = new builder.Message(session)
     .text(strings.get('upsell', 'prompt', 'eng'))
     .suggestedActions(builder.SuggestedActions.create(session, [

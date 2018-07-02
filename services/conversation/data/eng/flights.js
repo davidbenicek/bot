@@ -50,6 +50,11 @@ const noResults = [
   'I didn\'t find any flights. Try again, please',
 ];
 
+const followUp = [
+  'The flight to %s is going to leave without you if you don\'t book soon!',
+  'Have you made a decision about booking your flight to %s yet?',
+  '%s is still just a short flight away... 👀',
+];
 
 module.exports = {
   react,
@@ -60,5 +65,6 @@ module.exports = {
   returningPrompt,
   returningPromptNonFlexible,
   noResults,
+  followUp,
 };
 
