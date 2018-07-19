@@ -3,6 +3,8 @@ const moment = require('moment');
 
 const unsplash = require('./unsplash');
 
+const { BASE_URL } = process.env;
+
 const ensureDateIsNotPast = (inputDates, boundaryDate) => {
   if (!inputDates) throw new Error('Must specify array of at least one input date');
 
@@ -26,7 +28,7 @@ const formatRoutesIntoCards = async (session, flights) => new Promise(async (res
         builder.CardImage.create(session, image),
       ])
       .buttons([
-        builder.CardAction.openUrl(session, `https://www.skyscanner.net/transport/flights/${flight.origin.code}/${flight.destination.code}/`, 'Go to Skyscanner'),
+        builder.CardAction.openUrl(session, `${BASE_URL}/redirect?category=bookFlight&label=inspiration&url=https://www.skyscanner.net/transport/flights/${flight.origin.code}/${flight.destination.code}/`, 'Go to Skyscanner'),
       ]));
     return Promise.resolve();
   });
@@ -39,7 +41,7 @@ const formatRoutesIntoCards = async (session, flights) => new Promise(async (res
         builder.CardImage.create(session, 'https://palife.co.uk/wp-content/uploads/2017/08/skyscanner.jpg'),
       ])
       .buttons([
-        builder.CardAction.openUrl(session, 'https://www.skyscanner.net', 'More on Skyscanner'),
+        builder.CardAction.openUrl(session, `${BASE_URL}/redirect?category=bookFlight&label=skyscanner&url=https://www.skyscanner.net`, 'More on Skyscanner'),
       ]));
     resolve(flightsOverview);
   });
@@ -61,7 +63,7 @@ const formatQuotesIntoCards = (session, flights) => new Promise(async (resolve) 
         builder.CardImage.create(session, image),
       ])
       .buttons([
-        builder.CardAction.openUrl(session, `http://skyscanner.net/transport/flights/${flight.outbound.origin.code}/${flight.outbound.destination.code}/${outboundDate}/${inboundDate}`, 'Go to Skyscanner'),
+        builder.CardAction.openUrl(session, `${BASE_URL}/redirect?category=bookFlight&label=route&url=http://skyscanner.net/transport/flights/${flight.outbound.origin.code}/${flight.outbound.destination.code}/${outboundDate}/${inboundDate}`, 'Go to Skyscanner'),
       ]));
     return Promise.resolve();
   });
@@ -74,7 +76,7 @@ const formatQuotesIntoCards = (session, flights) => new Promise(async (resolve) 
         builder.CardImage.create(session, 'https://palife.co.uk/wp-content/uploads/2017/08/skyscanner.jpg'),
       ])
       .buttons([
-        builder.CardAction.openUrl(session, 'https://www.skyscanner.net', 'More on Skyscanner'),
+        builder.CardAction.openUrl(session, `${BASE_URL}/redirect?category=bookFlight&label=skyscanner&url=https://www.skyscanner.net`, 'More on Skyscanner'),
       ]));
     resolve(flightsOverview);
   });

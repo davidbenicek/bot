@@ -1,9 +1,12 @@
 const restify = require('restify');
 const builder = require('botbuilder');
+const ua = require('universal-analytics');
+
+const visitor = ua('UA-100450115-2');
+
 require('dotenv').load();
 
 const secretsManager = require('./services/processing/secretsManager');
-
 const bookFlight = require('./services/conversation/bookFlight');
 const bookAccommodation = require('./services/conversation/bookAccommodation');
 const thingsToDo = require('./services/conversation/thingsToDo');
@@ -13,6 +16,7 @@ const LATEST = require('./services/conversation/data/latest');
 
 // const botbuilderAzure = require("botbuilder-azure");
 const server = restify.createServer();
+server.use(restify.plugins.queryParser());
 server.listen(process.env.PORT || 3978, () => {
   console.log(`Listening on port ${process.env.PORT || 3978}`);
 });
@@ -128,6 +132,7 @@ const setUp = () => {
   });
 
   server.get('/prompt', (req, res, cb) => {
+    visitor.event('conversation', 'prompt').send();
     res.send(LATEST.prompt);
     bot.send(new builder.Message()
       .address(LATEST.address)
@@ -135,6 +140,17 @@ const setUp = () => {
     return cb();
   });
 };
+
+server.get('/redirect', (req, res, cb) => {
+  const {
+    category,
+    label,
+    url,
+  } = req.query;
+
+  visitor.event(category, 'clickout', label).send();
+  res.redirect(url, cb);
+});
 
 if (process.env.BotEnv !== 'prod') {
   console.log('Running in local mode... keys are already set!');

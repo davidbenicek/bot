@@ -10,16 +10,25 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="shortcut icon" type="image/png" href="/media"/>
   <link href="/css/" rel="stylesheet">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100450115-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-100450115-2');
+  </script>
 </head>
 
 <body>
   <img id='logo' src='media/'></img>
   <div id='skype'>
-    <a href='https://join.skype.com/bot/50ede403-1ca8-477b-b32e-05211658bf27'><img src='https://dev.botframework.com/Client/Images/Add-To-Skype-Buttons.png'/></a>
+    <a onclick='track("skype","skype")' href='https://join.skype.com/bot/50ede403-1ca8-477b-b32e-05211658bf27'><img src='https://dev.botframework.com/Client/Images/Add-To-Skype-Buttons.png'/></a>
   </div>
   <!-- Taken from https://www.w3schools.com/howto/howto_js_accordion.asp -->
   <div id='dropdowns'>
-    <button class="accordion">What can you do? 🤔</button>
+    <button class="accordion instructions">What can you do? 🤔</button>
     <div class="panel">
       <h1>Hey, Welcome to Lorin! 👋 </h1>
       <p>
@@ -37,7 +46,7 @@
       </p>
     </div>
     
-    <button class="accordion">Are you a tester? 👉Click here👈</button>
+    <button class="accordion tester">Are you a tester? 👉Click here👈</button>
     <div class="panel">
       <h1>Well, hello there! 👋</h1>
       <p>
@@ -51,7 +60,7 @@
       </p>
     </div>
 
-    <button class="accordion">Privacy Statement 🤓</button>
+    <button class="accordion privacy">Privacy Statement 🤓</button>
     <div class="panel">
       <p>
         Effective date: June 28, 2018<br>

@@ -1,6 +1,8 @@
 const request = require('request-promise-native');
 const builder = require('botbuilder');
 
+const { BASE_URL } = process.env;
+
 const callAPI = (category, location) => {
   const { YELP_TOKEN } = process.env;
   if (!category) {
@@ -30,7 +32,7 @@ const formatYelpToCards = (session, results) => new Promise((resolve) => {
         builder.CardImage.create(session, yelp.image_url),
       ])
       .buttons([
-        builder.CardAction.openUrl(session, yelp.url, 'Go to listing'),
+        builder.CardAction.openUrl(session, `${BASE_URL}/redirect?category=bookAccommodation&label=listing&url=${yelp.url}`, 'Go to listing'),
       ]));
     return Promise.resolve();
   });
@@ -42,7 +44,7 @@ const formatYelpToCards = (session, results) => new Promise((resolve) => {
         builder.CardImage.create(session, 'https://s3-media1.fl.yelpcdn.com/assets/srv0/styleguide/891ac3707136/assets/img/brand_guidelines/yelp_fullcolor@2x.png'),
       ])
       .buttons([
-        builder.CardAction.openUrl(session, 'https://www.yelp.com', 'More on Yelp'),
+        builder.CardAction.openUrl(session, `${BASE_URL}/redirect?category=bookAccommodation&label=yelp&url=https://www.yelp.com`, 'More on Yelp'),
       ]));
     resolve(cards);
   });

@@ -1,4 +1,7 @@
 const builder = require('botbuilder');
+const ua = require('universal-analytics');
+
+const visitor = ua('UA-100450115-2');
 
 const formatter = require('../processing/formatter');
 const skyscanner = require('../processing/skyscanner');
@@ -6,6 +9,8 @@ const strings = require('./strings');
 const LATEST = require('./data/latest');
 
 const promptOrigin = (session, reply, next) => {
+  visitor.pageview('bookFlight');
+  console.log('---> Prompt origin');
   console.log(reply);
   session.sendTyping();
   // Try get all the data from the initial user query
@@ -28,16 +33,20 @@ const promptOrigin = (session, reply, next) => {
 
   // If there's no from param, ask!
   if (!trip.origin) {
+    visitor.event('bookFlights', 'origin', 'missing').send();
     builder.Prompts.text(session, strings.get('flights', 'originPrompt', 'eng')); // TODO: Add send location button
   } else {
+    visitor.event('bookFlights', 'origin', 'provided').send();
     next();
   }
 };
 
 const promptDestination = async (session, reply, next) => {
+  console.log('---> Prompt destination');
   console.log(reply);
   session.sendTyping();
   if (reply.response) {
+    visitor.event('bookFlights', 'origin', 'elicited').send();
     session.dialogData.trip.origin = reply.response;
   }
 
@@ -46,44 +55,58 @@ const promptDestination = async (session, reply, next) => {
   // If there's no from param, ask!
   if (!trip.destination) {
     try {
+      visitor.event('bookFlights', 'destination', 'missing').send();
       builder.Prompts.text(session, strings.get('flights', 'destinationPrompt', 'eng')); // TODO: Add anywhere button
     } catch (err) {
       console.log(err);
       session.send(strings.get('error', 'error', 'eng'));
     }
   } else {
+    visitor.event('bookFlights', 'destination', 'provided').send();
     next();
   }
 };
 
 const promptFlexible = async (session, reply, next) => {
+  console.log('---> Prompt flexible');
   console.log(reply);
   session.sendTyping();
   if (reply.response) {
-    const response = (typeof reply.response === 'string') ? reply.response : reply.response.entity;
-    session.dialogData.trip.destination = response;
+    console.log(reply.response, typeof reply.response);
+    if (typeof reply.response === 'string') {
+      visitor.event('bookFlights', 'destination', 'elicited').send();
+      session.dialogData.trip.destination = reply.response;
+    } else {
+      visitor.event('bookFlights', 'destination', 'elicited').send();
+      console.log('here');
+      session.dialogData.trip.destination = reply.response.entity;
+    }
   }
   const { trip } = session.dialogData;
 
   // If there's no from param, ask!
   if (!trip.date1 && !trip.date2) {
     try {
+      visitor.event('bookFlights', 'dates', 'missing', 'both').send();
       builder.Prompts.choice(session, strings.get('flights', 'flexiblePrompt', 'eng'), ['Flexible', 'Specify Dates'], { listStyle: builder.ListStyle.button });
     } catch (err) {
       console.log(err);
       session.send(strings.get('error', 'error', 'eng'));
     }
   } else {
+    visitor.event('bookFlights', 'dates', 'provided', 'both').send();
     next();
   }
 };
 
 const promptOutbound = async (session, reply, next) => {
+  console.log('---> Prompt outbound');
   console.log(reply);
   session.sendTyping();
   if (reply.response) {
     const response = (typeof reply.response === 'string') ? reply.response : reply.response.entity;
     if (response.toLowerCase() === 'flexible') {
+      visitor.event('bookFlights', 'dates', 'elicited', 'flexible').send();
       session.dialogData.trip.date1 = 'anytime';
       session.dialogData.trip.date2 = 'anytime';
     }
@@ -104,10 +127,12 @@ const promptOutbound = async (session, reply, next) => {
 };
 
 const promptReturn = async (session, reply, next) => {
+  console.log('---> Prompt return');
   console.log(reply);
   session.sendTyping();
   if (reply.response) {
     if (reply.response.toLowerCase() === 'anytime') {
+      visitor.event('bookFlights', 'dates', 'elicited').send();
       session.dialogData.trip.date1 = 'anytime';
     } else {
       const tempDate = builder.EntityRecognizer.recognizeTime(
@@ -115,6 +140,7 @@ const promptReturn = async (session, reply, next) => {
         new Date(),
       ).resolution.start;
       session.dialogData.trip.date1 = tempDate.toISOString().slice(0, 10);
+      visitor.event('bookFlights', 'dates', 'elicited').send();
     }
   }
 
@@ -137,12 +163,15 @@ const promptReturn = async (session, reply, next) => {
 };
 
 const processRequest = async (session, reply, next) => {
+  console.log('---> Process flight request');
   session.sendTyping();
   if (reply.response) {
     const response = (typeof reply.response === 'string') ? reply.response : reply.response.entity;
     if (response.toLowerCase() === 'one way') {
+      visitor.event('bookFlights', 'dates', 'elicited').send();
       session.dialogData.trip.date2 = '';
     } else if (response.toLowerCase() === 'anytime') {
+      visitor.event('bookFlights', 'dates', 'elicited').send();
       session.dialogData.trip.date2 = 'anytime';
     } else {
       const tempDate = builder.EntityRecognizer.recognizeTime(
@@ -150,11 +179,11 @@ const processRequest = async (session, reply, next) => {
         new Date(),
       ).resolution.start;
       session.dialogData.trip.date2 = tempDate.toISOString().slice(0, 10);
+      visitor.event('bookFlights', 'dates', 'elicited').send();
     }
   }
 
   const { trip } = session.dialogData;
-  console.log(trip);
   if (!trip.destination || trip.destination.toLowerCase() === 'anywhere') {
     try {
       const fromSkyscannerCode = await skyscanner.getLocationCode(trip.origin);
@@ -203,6 +232,7 @@ const processRequest = async (session, reply, next) => {
 };
 
 const upsell = (session) => {
+  console.log('---> Prompt origin');
   // Save completed session info for follow up
   LATEST.destination = session.dialogData.trip.destination;
   LATEST.address = session.message.address;
