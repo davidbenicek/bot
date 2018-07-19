@@ -1,5 +1,5 @@
 module.exports = {
-  destination: 'x',
+  destination: '',
   user: {
     name: '',
     address: '',

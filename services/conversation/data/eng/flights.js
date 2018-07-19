@@ -11,7 +11,7 @@ const react = [
 const originPrompt = [
   'Where are you flying from?',
   'Where are you starting your trip?',
-  'Which airport are you flying from?',
+  'Which city are you flying from?',
 ];
 
 const destinationPrompt = [
@@ -29,7 +29,7 @@ const flexiblePrompt = [
 const returningPrompt = [
   'What about your return journey?',
   'When would you like to come back?',
-  'When are you coming back?',
+  'When are you coming back? (I miss you already...😥)',
 ];
 
 const outboundPrompt = [
