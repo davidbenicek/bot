@@ -7,6 +7,8 @@ const visitor = ua('UA-100450115-2');
 const VISA_COUNTRIES = require('./data/eng/nationalities');
 const strings = require('./strings');
 
+const { BASE_URL } = process.env;
+
 const promptsNationality = (session) => {
   visitor.pageview('visa');
   if (session.message.address.channelId !== 'emulator') {
@@ -71,7 +73,7 @@ const processRequest = (session, visa) => {
       builder.CardImage.create(session, 'https://www.esquireme.com/sites/default/files/styles/full_img/public/images/2016/08/11/passports-more-e1435313737544.jpg?itok=ueeDCMri'),
     ])
     .buttons([
-      builder.CardAction.openUrl(session, `https://en.wikipedia.org/wiki/Visa_requirements_for_${visa || session.message.value.visaCountrySelect}#Visa_requirements`, 'Your Visa Requirements'),
+      builder.CardAction.openUrl(session, `${BASE_URL}/redirect?category=visa&label=info&url=https://en.wikipedia.org/wiki/Visa_requirements_for_${visa || session.message.value.visaCountrySelect}#Visa_requirements`, 'Your Visa Requirements'),
     ])];
   const message = new builder.Message(session)
     .attachmentLayout(builder.AttachmentLayout.carousel)

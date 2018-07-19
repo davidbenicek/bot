@@ -7,6 +7,8 @@ const unsplash = require('../processing/unsplash');
 const strings = require('./strings');
 const LATEST = require('./data/latest');
 
+const { BASE_URL } = process.env;
+
 const promptDestination = (session, reply, next) => {
   visitor.pageview('thingsToDo');
   console.log(reply);
@@ -51,8 +53,7 @@ const processRequest = async (session, reply, next) => {
         ),
       ])
       .buttons([
-        // TODO: Change to redirect
-        builder.CardAction.openUrl(session, `https://wikitravel.org/en/${session.dialogData.trip.destination}#See`, 'Go to WikiTravel'),
+        builder.CardAction.openUrl(session, `${BASE_URL}/redirect?category=thingsToDo&label=info&url=https://wikitravel.org/en/${session.dialogData.trip.destination}#See`, 'Go to WikiTravel'),
       ])];
     const message = new builder.Message(session)
       .attachmentLayout(builder.AttachmentLayout.list)

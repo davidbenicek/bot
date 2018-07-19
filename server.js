@@ -16,6 +16,7 @@ const LATEST = require('./services/conversation/data/latest');
 
 // const botbuilderAzure = require("botbuilder-azure");
 const server = restify.createServer();
+server.use(restify.plugins.queryParser());
 server.listen(process.env.PORT || 3978, () => {
   console.log(`Listening on port ${process.env.PORT || 3978}`);
 });
@@ -139,6 +140,17 @@ const setUp = () => {
     return cb();
   });
 };
+
+server.get('/redirect', (req, res, cb) => {
+  const {
+    category,
+    label,
+    url,
+  } = req.query;
+
+  visitor.event(category, 'clickout', label).send();
+  res.redirect(url, cb);
+});
 
 if (process.env.BotEnv !== 'prod') {
   console.log('Running in local mode... keys are already set!');
