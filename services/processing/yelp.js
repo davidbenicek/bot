@@ -39,6 +39,7 @@ const formatYelpToCards = (session, results) => new Promise((resolve) => {
       .title('Find more great places on Yelp')
       .text('Search for hotels, restaurants etc.')
       .images([
+        // TODO: Swap for redirect
         builder.CardImage.create(session, 'https://s3-media1.fl.yelpcdn.com/assets/srv0/styleguide/891ac3707136/assets/img/brand_guidelines/yelp_fullcolor@2x.png'),
       ])
       .buttons([

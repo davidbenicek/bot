@@ -1,4 +1,7 @@
 const builder = require('botbuilder');
+const ua = require('universal-analytics');
+
+const visitor = ua('UA-100450115-2');
 
 const yelp = require('../processing/yelp');
 const strings = require('./strings');
@@ -26,8 +29,10 @@ const promptType = (session, reply, next) => {
 
   // If there's no from param, ask!
   if (!trip.type) {
+    visitor.event('bookAccommodation', 'type', 'missing').send();
     builder.Prompts.choice(session, strings.get('accommodation', 'stylePrompt', 'eng'), ['Hotel', 'Hostel'], { listStyle: builder.ListStyle.button });
   } else {
+    visitor.event('bookAccommodation', 'type', 'elicited', (session.dialogData.trip.type === 'hotel') ? 0 : 1).send();
     next();
   }
 };
@@ -38,18 +43,21 @@ const promptDestination = async (session, reply, next) => {
   if (reply.response) {
     const response = (typeof reply.response === 'string') ? reply.response : reply.response.entity;
     session.dialogData.trip.type = response;
+    visitor.event('bookAccommodation', 'type', 'elicited', (session.dialogData.trip.type === 'hotel') ? 0 : 1).send();
   }
   const { trip } = session.dialogData;
 
   // If there's no from param, ask!
   if (!trip.destination || trip.destination.toLowerCase() === 'anywhere') {
     try {
+      visitor.event('bookAccommodation', 'destination', 'missing').send();
       builder.Prompts.text(session, strings.get('accommodation', 'destinationPrompt', 'eng'));
     } catch (err) {
       console.log(err);
       session.send(strings.get('error', 'error', 'eng'));
     }
   } else {
+    visitor.event('bookAccommodation', 'destination', 'provided').send();
     next();
   }
 };
@@ -57,6 +65,7 @@ const promptDestination = async (session, reply, next) => {
 const processRequest = async (session, reply, next) => {
   session.sendTyping();
   if (reply.response) {
+    visitor.event('bookAccommodation', 'destination', 'elicited').send();
     session.dialogData.trip.destination = reply.response;
   }
 

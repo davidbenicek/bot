@@ -1,9 +1,12 @@
 const restify = require('restify');
 const builder = require('botbuilder');
+const ua = require('universal-analytics');
+
+const visitor = ua('UA-100450115-2');
+
 require('dotenv').load();
 
 const secretsManager = require('./services/processing/secretsManager');
-
 const bookFlight = require('./services/conversation/bookFlight');
 const bookAccommodation = require('./services/conversation/bookAccommodation');
 const thingsToDo = require('./services/conversation/thingsToDo');
@@ -128,6 +131,7 @@ const setUp = () => {
   });
 
   server.get('/prompt', (req, res, cb) => {
+    visitor.event('conversation', 'prompt').send();
     res.send(LATEST.prompt);
     bot.send(new builder.Message()
       .address(LATEST.address)

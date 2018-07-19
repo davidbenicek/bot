@@ -1,13 +1,18 @@
 const builder = require('botbuilder');
 const FuzzySearch = require('fuzzy-search');
+const ua = require('universal-analytics');
+
+const visitor = ua('UA-100450115-2');
 
 const VISA_COUNTRIES = require('./data/eng/nationalities');
 const strings = require('./strings');
 
 const promptsNationality = (session) => {
   if (session.message.address.channelId !== 'emulator') {
+    visitor.event('visa', 'dropdown').send();
     builder.Prompts.text(session, strings.get('visa', 'countryPrompt', 'eng'));
   } else {
+    visitor.event('visa', 'fuzzy').send();
     const choices = VISA_COUNTRIES.map(choice => ({
       title: choice,
       value: choice.replace(' ', '_'),

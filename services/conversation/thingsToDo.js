@@ -1,4 +1,7 @@
 const builder = require('botbuilder');
+const ua = require('universal-analytics');
+
+const visitor = ua('UA-100450115-2');
 
 const unsplash = require('../processing/unsplash');
 const strings = require('./strings');
@@ -19,8 +22,10 @@ const promptDestination = (session, reply, next) => {
 
   // If there's no from param, ask!
   if (!session.dialogData.trip || !session.dialogData.trip.destination || session.dialogData.trip.destination === 'anywhere') {
+    visitor.event('thingsToDo', 'destination', 'missing').send();
     builder.Prompts.text(session, strings.get('thingsToDo', 'destinationPrompt', 'eng')); // TODO: Add send location button
   } else {
+    visitor.event('thingsToDo', 'destination', 'provided').send();
     next();
   }
 };
@@ -30,6 +35,7 @@ const processRequest = async (session, reply, next) => {
   session.sendTyping();
   if (reply.response) {
     session.dialogData.trip.destination = reply.response;
+    visitor.event('thingsToDo', 'destination', 'elicited').send();
   }
   try {
     const image = await unsplash.getImage(session.dialogData.trip.destination);
@@ -44,6 +50,7 @@ const processRequest = async (session, reply, next) => {
         ),
       ])
       .buttons([
+        // TODO: Change to redirect
         builder.CardAction.openUrl(session, `https://wikitravel.org/en/${session.dialogData.trip.destination}#See`, 'Go to WikiTravel'),
       ])];
     const message = new builder.Message(session)

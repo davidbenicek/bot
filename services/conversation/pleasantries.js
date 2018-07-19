@@ -1,4 +1,7 @@
 const builder = require('botbuilder');
+const ua = require('universal-analytics');
+
+const visitor = ua('UA-100450115-2');
 
 const strings = require('./strings');
 
@@ -14,6 +17,7 @@ const constructGreetingSuggestions = session => (
 );
 
 const hello = async (session) => {
+  visitor.event('conversation', 'greeting').send();
   session.dialogData.trip = {};
   [session.dialogData.name] = session.message.address.user.name.split(' ');
   session.send(strings.get('pleasantries', 'hello', 'eng'), session.dialogData.name);
@@ -22,23 +26,33 @@ const hello = async (session) => {
 };
 
 const misunderstanding = (session) => {
+  visitor.event('conversation', 'misunderstanding').send();
+
   session.send(strings.get('pleasantries', 'misunderstanding', 'eng'), session.message.text);
   session.send(strings.get('pleasantries', 'improvement', 'eng'));
 };
 
 const goodbye = (session) => {
+  visitor.event('conversation', 'goodbye').send();
+
   session.send(strings.get('pleasantries', 'goodbye', 'eng'));
 };
 
 const thanks = (session) => {
+  visitor.event('conversation', 'thanks').send();
+
   session.send(strings.get('pleasantries', 'thanks', 'eng'));
 };
 
 const joke = (session) => {
+  visitor.event('conversation', 'joke').send();
+
   session.send(strings.get('pleasantries', 'jokes', 'eng'));
 };
 
 const welcome = (bot, address) => {
+  visitor.event('conversation', 'welcome').send();
+
   bot.send(new builder.Message()
     .text(strings.get('pleasantries', 'hello', 'eng'), address.user.name.split(' ')[0])
     .address(address));
@@ -46,8 +60,8 @@ const welcome = (bot, address) => {
     bot.send(new builder.Message()
       .text(strings.get('pleasantries', 'termsAndPrivacy', 'eng'), address.user.name.split(' ')[0])
       .address(address));
+    setTimeout(() => { bot.send(constructGreetingSuggestions().address(address)); }, 1000);
   }, 1000);
-  setTimeout(() => { bot.send(constructGreetingSuggestions().address(address)); }, 1000);
 };
 
 module.exports = {
