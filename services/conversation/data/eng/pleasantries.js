@@ -46,6 +46,10 @@ const jokes = [
   'Something, something Turing test...',
 ];
 
+const termsAndPrivacy = [
+  'Feel free to review my terms of use and privacy statement 👉 http://benicek-travelbot.azurewebsites.net/. It\'s all pretty standard!',
+];
+
 module.exports = {
   hello,
   misunderstanding,
@@ -53,4 +57,5 @@ module.exports = {
   goodbye,
   thanks,
   jokes,
+  termsAndPrivacy,
 };
