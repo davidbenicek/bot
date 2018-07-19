@@ -61,7 +61,7 @@ expected.twoRoutes = [{
   images: [{ url: 'some image' }],
   buttons: [{
     type: 'openUrl',
-    value: 'https://www.skyscanner.net/transport/flights/origin_code2/destination_code2/',
+    value: 'undefined/redirect?category=bookFlight&label=inspiration&url=https://www.skyscanner.net/transport/flights/origin_code2/destination_code2/',
     title: 'Go to Skyscanner',
   }],
 }, {
@@ -72,7 +72,7 @@ expected.twoRoutes = [{
   buttons:
  [{
    type: 'openUrl',
-   value: 'https://www.skyscanner.net/transport/flights/origin_code1/destination_code1/',
+   value: 'undefined/redirect?category=bookFlight&label=inspiration&url=https://www.skyscanner.net/transport/flights/origin_code1/destination_code1/',
    title: 'Go to Skyscanner',
  }],
 }, {
@@ -84,7 +84,7 @@ expected.twoRoutes = [{
   buttons:
  [{
    type: 'openUrl',
-   value: 'https://www.skyscanner.net',
+   value: 'undefined/redirect?category=bookFlight&label=skyscanner&url=https://www.skyscanner.net',
    title: 'More on Skyscanner',
  }],
 },
@@ -169,7 +169,7 @@ expected.twoQuotesWithReturn = [{
     {
       title: 'Go to Skyscanner',
       type: 'openUrl',
-      value: 'http://skyscanner.net/transport/flights/code2/code3/181111/181115',
+      value: 'undefined/redirect?category=bookFlight&label=route&url=http://skyscanner.net/transport/flights/code2/code3/181111/181115',
     },
   ],
   images: [
@@ -185,7 +185,7 @@ expected.twoQuotesWithReturn = [{
     {
       title: 'Go to Skyscanner',
       type: 'openUrl',
-      value: 'http://skyscanner.net/transport/flights/code1/code2/181111/181115',
+      value: 'undefined/redirect?category=bookFlight&label=route&url=http://skyscanner.net/transport/flights/code1/code2/181111/181115',
     },
   ],
   images: [
@@ -198,7 +198,7 @@ expected.twoQuotesWithReturn = [{
     {
       title: 'More on Skyscanner',
       type: 'openUrl',
-      value: 'https://www.skyscanner.net',
+      value: 'undefined/redirect?category=bookFlight&label=skyscanner&url=https://www.skyscanner.net',
     },
   ],
   images: [
@@ -258,7 +258,7 @@ expected.twoQuotesOneWay = [{
     {
       title: 'Go to Skyscanner',
       type: 'openUrl',
-      value: 'http://skyscanner.net/transport/flights/code1/code2/181111/',
+      value: 'undefined/redirect?category=bookFlight&label=route&url=http://skyscanner.net/transport/flights/code1/code2/181111/',
     },
   ],
   images: [
@@ -274,7 +274,7 @@ expected.twoQuotesOneWay = [{
     {
       title: 'Go to Skyscanner',
       type: 'openUrl',
-      value: 'http://skyscanner.net/transport/flights/code1/code2/181111/',
+      value: 'undefined/redirect?category=bookFlight&label=route&url=http://skyscanner.net/transport/flights/code1/code2/181111/',
     },
   ],
   images: [
@@ -290,7 +290,7 @@ expected.twoQuotesOneWay = [{
     {
       title: 'More on Skyscanner',
       type: 'openUrl',
-      value: 'https://www.skyscanner.net',
+      value: 'undefined/redirect?category=bookFlight&label=skyscanner&url=https://www.skyscanner.net',
     },
   ],
   images: [
