@@ -11,7 +11,7 @@ const react = [
 const originPrompt = [
   'Where are you flying from?',
   'Where are you starting your trip?',
-  'From which airport are you flying?',
+  'Which city are you flying from?',
 ];
 
 const destinationPrompt = [
@@ -29,7 +29,7 @@ const flexiblePrompt = [
 const returningPrompt = [
   'What about your return journey?',
   'When would you like to come back?',
-  'When are you coming back?',
+  'When are you coming back? (I miss you already...😥)',
 ];
 
 const outboundPrompt = [
@@ -50,6 +50,11 @@ const noResults = [
   'I didn\'t find any flights. Try again, please',
 ];
 
+const followUp = [
+  'The flight to %s is going to leave without you if you don\'t book soon!',
+  'Have you made a decision about booking your flight to %s yet?',
+  '%s is still just a short flight away... 👀',
+];
 
 module.exports = {
   react,
@@ -60,5 +65,6 @@ module.exports = {
   returningPrompt,
   returningPromptNonFlexible,
   noResults,
+  followUp,
 };
 

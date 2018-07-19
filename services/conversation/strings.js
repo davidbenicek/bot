@@ -1,5 +1,5 @@
 const STRINGS = {
-  accomodation: module.require('./data/eng/accomodation'),
+  accommodation: module.require('./data/eng/accommodation'),
   flights: module.require('./data/eng/flights'),
   upsell: module.require('./data/eng/upsell'),
   error: module.require('./data/eng/error'),

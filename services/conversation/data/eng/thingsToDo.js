@@ -11,7 +11,13 @@ const react = [
   'I can\'t believe you\'re not taking me with you to go explore! 🔍👀',
 ];
 
+const followUp = [
+  'The activities in %s are calling your name!',
+  'Imagine being in %s and exploring all those things to do that I showed you!',
+];
+
 module.exports = {
   destinationPrompt,
   react,
+  followUp,
 };

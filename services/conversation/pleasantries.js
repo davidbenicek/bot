@@ -2,18 +2,22 @@ const builder = require('botbuilder');
 
 const strings = require('./strings');
 
-const hello = (session) => {
-  session.dialogData.trip = {};
-  [session.dialogData.name] = session.message.address.user.name.split(' ');
-  session.send(strings.get('pleasantries', 'hello', 'eng'), session.dialogData.name);
-  const msg = new builder.Message(session)
+const constructGreetingSuggestions = session => (
+  new builder.Message(session)
     .text('Some of the things you could do are:')
     .suggestedActions(builder.SuggestedActions.create(session, [
       builder.CardAction.imBack(session, 'Book me a flight', '✈️ Book a flight'),
       builder.CardAction.imBack(session, 'Book accommodation', '🏠 Book accommodation'),
       builder.CardAction.imBack(session, 'Tell me about things to do', '📍 Things to do'),
       builder.CardAction.imBack(session, 'Send me visa information', '🛂 Visa info'),
-    ]));
+    ]))
+);
+
+const hello = async (session) => {
+  session.dialogData.trip = {};
+  [session.dialogData.name] = session.message.address.user.name.split(' ');
+  session.send(strings.get('pleasantries', 'hello', 'eng'), session.dialogData.name);
+  const msg = await constructGreetingSuggestions(session);
   session.send(msg);
 };
 
@@ -34,10 +38,19 @@ const joke = (session) => {
   session.send(strings.get('pleasantries', 'jokes', 'eng'));
 };
 
+const welcome = (bot, address) => {
+  bot.send(new builder.Message()
+    .text(strings.get('pleasantries', 'hello', 'eng'), address.user.name.split(' ')[0])
+    .address(address));
+  setTimeout(() => { bot.send(constructGreetingSuggestions().address(address)); }, 1000);
+};
+
 module.exports = {
+  constructGreetingSuggestions,
   hello,
   misunderstanding,
   goodbye,
   thanks,
   joke,
+  welcome,
 };

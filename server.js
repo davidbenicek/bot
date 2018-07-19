@@ -9,6 +9,7 @@ const bookAccommodation = require('./services/conversation/bookAccommodation');
 const thingsToDo = require('./services/conversation/thingsToDo');
 const visa = require('./services/conversation/visa');
 const pleasantries = require('./services/conversation/pleasantries');
+const LATEST = require('./services/conversation/data/latest');
 
 // const botbuilderAzure = require("botbuilder-azure");
 const server = restify.createServer();
@@ -109,6 +110,30 @@ const setUp = () => {
     });
 
   bot.dialog('/', intents);
+
+  bot.on('conversationUpdate', (message) => {
+    if (message.membersAdded) {
+      message.membersAdded.forEach((identity) => {
+        if (identity.id !== message.address.bot.id) {
+          pleasantries.welcome(bot, message.address);
+        }
+      });
+    }
+  });
+
+  bot.on('contactRelationUpdate', (message) => {
+    if (message.message === 'add') {
+      pleasantries.welcome(bot, message.address);
+    }
+  });
+
+  server.get('/prompt', (req, res, cb) => {
+    res.send(LATEST.prompt);
+    bot.send(new builder.Message()
+      .address(LATEST.address)
+      .text(LATEST.prompt, LATEST.destination));
+    return cb();
+  });
 };
 
 if (process.env.BotEnv !== 'prod') {

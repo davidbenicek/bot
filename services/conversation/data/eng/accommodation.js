@@ -15,10 +15,17 @@ const destinationPrompt = [
   'What\'s your destination?',
 ];
 
+const followUp = [
+  'Prices for accomodation in %s seem to be skyrocketing! 🚀',
+  'Are you still thinking about that amazing accommodation in %s? Because I sure am!',
+  '%s is very popular just now! You might want to book soon to avoid having to sleep in a tent 🏕',
+];
+
 
 module.exports = {
   react,
   stylePrompt,
   destinationPrompt,
+  followUp,
 };
 

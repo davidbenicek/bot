@@ -2,6 +2,7 @@ const builder = require('botbuilder');
 
 const unsplash = require('../processing/unsplash');
 const strings = require('./strings');
+const LATEST = require('./data/latest');
 
 const promptDestination = (session, reply, next) => {
   console.log(reply);
@@ -11,13 +12,13 @@ const promptDestination = (session, reply, next) => {
   if (destination) {
     // Save to dialog data
     const trip = {
-      destination: destination ? destination.entity : undefined,
+      destination: destination.entity,
     };
     session.dialogData.trip = trip;
   }
 
   // If there's no from param, ask!
-  if (!session.dialogData.trip.destination || session.dialogData.trip.destination === 'anywhere') {
+  if (!session.dialogData.trip || !session.dialogData.trip.destination || session.dialogData.trip.destination === 'anywhere') {
     builder.Prompts.text(session, strings.get('thingsToDo', 'destinationPrompt', 'eng')); // TODO: Add send location button
   } else {
     next();
@@ -57,6 +58,11 @@ const processRequest = async (session, reply, next) => {
 };
 
 const upsell = (session) => {
+  // Save completed session info for follow up
+  LATEST.destination = session.dialogData.trip.destination;
+  LATEST.address = session.message.address;
+  LATEST.prompt = strings.get('thingsToDo', 'followUp', 'eng');
+
   session.send(strings.get('thingsToDo', 'react', 'eng'));
   const msg = new builder.Message(session)
     .text(strings.get('upsell', 'prompt', 'eng'))
