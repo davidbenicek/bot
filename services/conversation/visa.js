@@ -8,6 +8,7 @@ const VISA_COUNTRIES = require('./data/eng/nationalities');
 const strings = require('./strings');
 
 const promptsNationality = (session) => {
+  visitor.pageview('visa');
   if (session.message.address.channelId !== 'emulator') {
     visitor.event('visa', 'dropdown').send();
     builder.Prompts.text(session, strings.get('visa', 'countryPrompt', 'eng'));

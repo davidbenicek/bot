@@ -9,6 +9,7 @@ const strings = require('./strings');
 const LATEST = require('./data/latest');
 
 const promptOrigin = (session, reply, next) => {
+  visitor.pageview('bookFlight');
   console.log('---> Prompt origin');
   console.log(reply);
   session.sendTyping();

@@ -8,6 +8,7 @@ const strings = require('./strings');
 const LATEST = require('./data/latest');
 
 const promptType = (session, reply, next) => {
+  visitor.pageview('bookAccomodation');
   console.log(reply);
   session.sendTyping();
   // Try get all the data from the initial user query
