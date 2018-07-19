@@ -11,7 +11,7 @@ const react = [
 const originPrompt = [
   'Where are you flying from?',
   'Where are you starting your trip?',
-  'From which airport are you flying?',
+  'Which airport are you flying from?',
 ];
 
 const destinationPrompt = [

@@ -6,7 +6,6 @@ const strings = require('./strings');
 const LATEST = require('./data/latest');
 
 const promptOrigin = (session, reply, next) => {
-  console.log(session);
   console.log(reply);
   session.sendTyping();
   // Try get all the data from the initial user query

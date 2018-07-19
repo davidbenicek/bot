@@ -42,7 +42,7 @@ const promptDestination = async (session, reply, next) => {
   const { trip } = session.dialogData;
 
   // If there's no from param, ask!
-  if (!trip.destination) {
+  if (!trip.destination || trip.destination.toLowerCase() === 'anywhere') {
     try {
       builder.Prompts.text(session, strings.get('accommodation', 'destinationPrompt', 'eng'));
     } catch (err) {

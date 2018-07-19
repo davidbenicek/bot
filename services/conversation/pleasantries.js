@@ -42,7 +42,7 @@ const welcome = (bot, address) => {
   bot.send(new builder.Message()
     .text(strings.get('pleasantries', 'hello', 'eng'), address.user.name.split(' ')[0])
     .address(address));
-  setTimeout(() => { bot.send(constructGreetingSuggestions().address(address)); }, 300);
+  setTimeout(() => { bot.send(constructGreetingSuggestions().address(address)); }, 1000);
 };
 
 module.exports = {
