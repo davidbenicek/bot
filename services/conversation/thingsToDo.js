@@ -24,7 +24,7 @@ const promptDestination = (session, reply, next) => {
   }
 
   // If there's no from param, ask!
-  if (!session.dialogData.trip || !session.dialogData.trip.destination || session.dialogData.trip.destination === 'anywhere') {
+  if (!session.dialogData.trip || !session.dialogData.trip.destination || session.dialogData.trip.destination.toLowerCase() === 'anywhere') {
     visitor.event('thingsToDo', 'destination', 'missing').send();
     builder.Prompts.text(session, strings.get('thingsToDo', 'destinationPrompt', 'eng')); // TODO: Add send location button
   } else {
