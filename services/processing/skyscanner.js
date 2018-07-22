@@ -81,7 +81,7 @@ const formatQuotesData = async (quotes, places, carriers, currency, length) => {
     let outbound;
     if (quote.InboundLeg) {
       inbound = {
-        carrier: carriersLookUp[quote.InboundLeg.CarrierIds[0]],
+        carrier: quote.InboundLeg.CarrierIds[0] ? carriersLookUp[quote.InboundLeg.CarrierIds[0]] : { name: 'unknown' },
         origin: placesLookUp[quote.InboundLeg.OriginId],
         destination: placesLookUp[quote.InboundLeg.DestinationId],
         date: quote.InboundLeg.DepartureDate,
