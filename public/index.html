@@ -23,8 +23,12 @@
 
 <body>
   <img id='logo' src='media/'></img>
+  <div id='links'>
+    <a onclick='track("links","messenger");' href='https://www.messenger.com/t/1720458348023526'><img src='https://facebook.botframework.com/Content/MessageUs.png'></a>
+    <a onclick='track("links","slack");'  href="https://slack.com/oauth/authorize?scope=bot&client_id=382830881122.383879755047&redirect_uri=https%3a%2f%2fslack.botframework.com%2fHome%2fauth&state=Benicek-TravelBot"><img height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"></a>
+    <a onclick='track("links","skype");' href='https://join.skype.com/bot/50ede403-1ca8-477b-b32e-05211658bf27'><img src='https://dev.botframework.com/Client/Images/Add-To-Skype-Buttons.png'/></a>
+  </div>
   <div id='skype'>
-    <a onclick='track("skype","skype")' href='https://join.skype.com/bot/50ede403-1ca8-477b-b32e-05211658bf27'><img src='https://dev.botframework.com/Client/Images/Add-To-Skype-Buttons.png'/></a>
   </div>
   <!-- Taken from https://www.w3schools.com/howto/howto_js_accordion.asp -->
   <div id='dropdowns'>
@@ -46,7 +50,7 @@
       </p>
     </div>
     
-    <button class="accordion tester">Are you a tester? 👉Click here👈</button>
+    <button class="accordion tester">Are you a tester? 👉 Click here 👈</button>
     <div class="panel">
       <h1>Well, hello there! 👋</h1>
       <p>
@@ -63,6 +67,12 @@
     <button class="accordion video">A quick demo video 🎬</button>
     <div class="panel">
       <iframe width="560" height="315" src="https://www.youtube.com/embed/klAgEJp0HDc?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <button class="accordion chat">Chat to me here! 🗣🤖</button>
+    <div class="panel chatPanel">
+      <iframe src='https://webchat.botframework.com/embed/Benicek-TravelBot?s=oLKjPoZRRSo.cwA.Pt0.sfNFLNctPoGKd6csJq016OYHm_JvuWPdYUE3bh4ysPI'></iframe>
+      <p>Pssht...I look better on Facebook and Skype! 🤫</p>
     </div>
 
     <button class="accordion privacy">Privacy Statement 🤓</button>
