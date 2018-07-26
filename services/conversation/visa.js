@@ -11,7 +11,7 @@ const { BASE_URL } = process.env;
 
 const promptsNationality = (session) => {
   visitor.pageview('visa');
-  if (session.message.address.channelId !== 'emulator') {
+  if (session.message.address.channelId !== 'emulator' && session.message.address.channelId !== 'webchat') {
     visitor.event('visa', 'dropdown').send();
     builder.Prompts.text(session, strings.get('visa', 'countryPrompt', 'eng'));
   } else {
