@@ -38,12 +38,19 @@ button {
   padding-bottom: 10px;
 }
 
-#skype {
-  width: 50%;
-  margin: auto;
-  text-align: right;
-  padding-bottom: 10px;
+#links {
+  text-align: center;
+  padding: 10px;
 }
+#links > a{
+  padding-left: 10px;
+}
+
+#links > a > img {
+  height: 25px;
+  width: auto;
+}
+
 
 /* Taken from https://www.w3schools.com/howto/howto_js_accordion.asp */
 .accordion {
@@ -82,4 +89,14 @@ button {
 
 .active:after {
   content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+.chatPanel > iframe {
+  width: 90%;
+  min-height: 600px;
+  margin: 10px;
+}
+
+.chatPanel{
+ text-align: center;
 }
