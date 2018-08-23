@@ -88,7 +88,7 @@ const processNationality = (session, reply) => {
   const searcher = new FuzzySearch(VISA_COUNTRIES, [], {
     sort: true,
   });
-  const result = searcher.search(reply.response);// TODO:ask which is best - not always 0th
+  const result = searcher.search(reply.response);
   session.send(strings.get('visa', 'countryConfirm', 'eng'), result[0]);
   processRequest(session, result[0]);
 };

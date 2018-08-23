@@ -14,7 +14,6 @@ const visa = require('./services/conversation/visa');
 const pleasantries = require('./services/conversation/pleasantries');
 const LATEST = require('./services/conversation/data/latest');
 
-// const botbuilderAzure = require("botbuilder-azure");
 const server = restify.createServer();
 server.use(restify.plugins.queryParser());
 server.listen(process.env.PORT || 3978, () => {
@@ -52,22 +51,8 @@ const setUp = () => {
   // Listen for messages from users
   server.post('/api/messages', connector.listen());
 
-  /*----------------------------------------------------------------------------------------
-  * Bot Storage: This is a great spot to register the private state storage for your bot.
-  * We provide adapters for Azure Table, CosmosDb, SQL Azure, or you can implement your own!
-  * For samples and documentation, see: https://github.com/Microsoft/BotBuilder-Azure
-  * ---------------------------------------------------------------------------------------- */
-
-  // var tableName = 'botdata';
-  // var azureTableClient =
-  // new botbuilderAzure.AzureTableClient(tableName, process.env['AzureWebJobsStorage']);
-  // var tableStorage = new botbuilderAzure.AzureBotStorage({ gzipData: false }, azureTableClient);
-
-  // Create your bot with a function to receive messages from the user
   const bot = new builder.UniversalBot(connector);
-  // bot.set('storage', tableStorage);
 
-  // Make sure you add code to validate these fields
   const { LUIS_APP_ID } = process.env;
   const { LUIS_APP_KEY } = process.env;
   const LUIS_API_HOSTNAME = process.env.LUIS_API_HOSTNAME || 'westus.api.cognitive.microsoft.com';

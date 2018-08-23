@@ -34,7 +34,7 @@ const promptOrigin = (session, reply, next) => {
   // If there's no from param, ask!
   if (!trip.origin) {
     visitor.event('bookFlights', 'origin', 'missing').send();
-    builder.Prompts.text(session, strings.get('flights', 'originPrompt', 'eng')); // TODO: Add send location button
+    builder.Prompts.text(session, strings.get('flights', 'originPrompt', 'eng'));
   } else {
     visitor.event('bookFlights', 'origin', 'provided').send();
     next();
@@ -56,7 +56,7 @@ const promptDestination = async (session, reply, next) => {
   if (!trip.destination) {
     try {
       visitor.event('bookFlights', 'destination', 'missing').send();
-      builder.Prompts.text(session, strings.get('flights', 'destinationPrompt', 'eng')); // TODO: Add anywhere button
+      builder.Prompts.text(session, strings.get('flights', 'destinationPrompt', 'eng'));
     } catch (err) {
       console.log(err);
       session.send(strings.get('error', 'error', 'eng'));
@@ -226,7 +226,6 @@ const processRequest = async (session, reply, next) => {
     } catch (err) {
       console.log(err);
       session.send(strings.get('error', 'error', 'eng'));
-      // TODO: This needs to be handeled better
     }
   }
 };
